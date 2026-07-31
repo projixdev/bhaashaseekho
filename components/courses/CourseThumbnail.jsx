@@ -1,0 +1,43 @@
+import { Noto_Sans_Kannada, Noto_Sans_Devanagari, Noto_Sans_Telugu } from "next/font/google";
+
+// Script-art thumbnails instead of stock photos — each course's own
+// language script, layered (large faint + smaller bold), on a brand-color
+// background. Zero external image assets needed.
+const notoKannada = Noto_Sans_Kannada({ subsets: ["kannada"], weight: "700" });
+const notoDevanagari = Noto_Sans_Devanagari({ subsets: ["devanagari"], weight: "700" });
+const notoTelugu = Noto_Sans_Telugu({ subsets: ["telugu"], weight: "700" });
+
+const SCRIPT_MAP = {
+  kannada: { text: "ಕನ್ನಡ", fontClassName: notoKannada.className, bgClassName: "bg-primary" },
+  hindi: { text: "हिन्दी", fontClassName: notoDevanagari.className, bgClassName: "bg-accent" },
+  telugu: { text: "తెలుగు", fontClassName: notoTelugu.className, bgClassName: "bg-primary" },
+};
+
+export default function CourseThumbnail({ slug, title }) {
+  const script = SCRIPT_MAP[slug];
+
+  return (
+    <div className="relative aspect-[4/3] overflow-hidden">
+      {/* Badge with the Latin-script name, for anyone who doesn't read the
+          native script shown behind it. */}
+      <span className="absolute left-3 top-3 z-10 rounded-full bg-background/90 px-2.5 py-1 text-xs font-semibold text-primary backdrop-blur">
+        {title}
+      </span>
+
+      {script ? (
+        <div
+          role="img"
+          aria-label={`${title} course`}
+          className={`relative flex h-full w-full items-center justify-center ${script.bgClassName}`}
+        >
+          <span className={`${script.fontClassName} select-none text-7xl leading-none text-white opacity-20`}>
+            {script.text}
+          </span>
+          <span className={`${script.fontClassName} absolute text-3xl leading-none text-white`}>{script.text}</span>
+        </div>
+      ) : (
+        <div className="h-full w-full bg-muted" role="img" aria-label={`${title} course`} />
+      )}
+    </div>
+  );
+}
