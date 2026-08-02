@@ -28,17 +28,19 @@ export default function Footer() {
           <p className="mt-3 text-sm text-secondary">{footer.contact.email}</p>
           <p className="text-sm text-secondary">{footer.contact.phone}</p>
 
-          <div className="mt-4 flex gap-4">
-            {footer.socialLinks.map((social) => (
-              <a
-                key={social.label}
-                href={social.href}
-                className="text-sm text-secondary hover:text-foreground"
-              >
-                {social.label}
-              </a>
-            ))}
-          </div>
+          {footer.socialLinks.length > 0 && (
+            <div className="mt-4 flex gap-4">
+              {footer.socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="text-sm text-secondary hover:text-foreground"
+                >
+                  {social.label}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

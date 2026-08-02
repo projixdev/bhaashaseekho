@@ -7,9 +7,13 @@ import CourseThumbnail from "@/components/courses/CourseThumbnail";
 export default function CourseCard({ course, ctaLabel = "Get in Touch", ctaHref = "/register" }) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-background">
-      <CourseThumbnail slug={course.slug} title={course.title} />
+      <Link href={`/courses/${course.slug}`} className="cursor-pointer">
+        <CourseThumbnail slug={course.slug} title={course.title} />
+      </Link>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-heading font-semibold text-foreground">{course.title}</h3>
+        <Link href={`/courses/${course.slug}`} className="cursor-pointer">
+          <h3 className="font-heading font-semibold text-foreground hover:text-accent">{course.title}</h3>
+        </Link>
         <p className="mt-2 flex-1 text-sm text-secondary">{course.shortDescription}</p>
         <Link
           href={ctaHref}

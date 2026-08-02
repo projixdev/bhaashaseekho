@@ -1,6 +1,7 @@
 import { SITE_URL } from "@/lib/seo";
+import { getAllCourseSlugs } from "@/data/courses";
 
-const routes = [
+const staticRoutes = [
   { path: "", priority: 1.0, changeFrequency: "weekly" },
   { path: "/courses", priority: 0.9, changeFrequency: "weekly" },
   { path: "/register", priority: 0.9, changeFrequency: "monthly" },
@@ -12,7 +13,13 @@ const routes = [
 export default function sitemap() {
   const lastModified = new Date();
 
-  return routes.map(({ path, priority, changeFrequency }) => ({
+  const courseRoutes = getAllCourseSlugs().map((slug) => ({
+    path: `/courses/${slug}`,
+    priority: 0.8,
+    changeFrequency: "monthly",
+  }));
+
+  return [...staticRoutes, ...courseRoutes].map(({ path, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,
     lastModified,
     changeFrequency,

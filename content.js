@@ -177,9 +177,9 @@ export const contactPage = {
   },
   details: {
     emailLabel: "Email",
-    email: "abc@gmail.com",
+    email: "bhaashaseekho@gmail.com",
     phoneLabel: "Phone",
-    phone: "00000 00000",
+    phone: "+91 81056 79418",
   },
   form: {
     heading: "Or send us a message",
@@ -225,13 +225,11 @@ export const footer = {
   quickLinksHeading: "Quick Links",
   contactHeading: "Contact",
   contact: {
-    email: "abc@gmail.com",
-    phone: "00000 00000",
+    email: "bhaashaseekho@gmail.com",
+    phone: "+91 81056 79418",
   },
-  socialLinks: [
-    { label: "Instagram", href: "#" },
-    { label: "Facebook", href: "#" },
-  ],
+  // No social accounts live yet — add entries here once they exist.
+  socialLinks: [],
   copyright: `© ${new Date().getFullYear()} Bhaasha Seekho. All rights reserved.`,
 };
 
@@ -278,7 +276,7 @@ export const privacyPolicy = {
     },
     {
       heading: "Contact Us",
-      body: ["abc@gmail.com"],
+      body: ["bhaashaseekho@gmail.com"],
     },
   ],
 };

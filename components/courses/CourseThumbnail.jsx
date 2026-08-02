@@ -1,16 +1,12 @@
-import { Noto_Sans_Kannada, Noto_Sans_Devanagari, Noto_Sans_Telugu } from "next/font/google";
+import { SCRIPT_FONTS } from "@/lib/scriptFonts";
 
 // Script-art thumbnails instead of stock photos — each course's own
 // language script, layered (large faint + smaller bold), on a brand-color
 // background. Zero external image assets needed.
-const notoKannada = Noto_Sans_Kannada({ subsets: ["kannada"], weight: "700" });
-const notoDevanagari = Noto_Sans_Devanagari({ subsets: ["devanagari"], weight: "700" });
-const notoTelugu = Noto_Sans_Telugu({ subsets: ["telugu"], weight: "700" });
-
 const SCRIPT_MAP = {
-  kannada: { text: "ಕನ್ನಡ", fontClassName: notoKannada.className, bgClassName: "bg-primary" },
-  hindi: { text: "हिन्दी", fontClassName: notoDevanagari.className, bgClassName: "bg-accent" },
-  telugu: { text: "తెలుగు", fontClassName: notoTelugu.className, bgClassName: "bg-primary" },
+  kannada: { text: "ಕನ್ನಡ", fontClassName: SCRIPT_FONTS.kannada, bgClassName: "bg-primary" },
+  hindi: { text: "हिन्दी", fontClassName: SCRIPT_FONTS.hindi, bgClassName: "bg-accent" },
+  telugu: { text: "తెలుగు", fontClassName: SCRIPT_FONTS.telugu, bgClassName: "bg-primary" },
 };
 
 export default function CourseThumbnail({ slug, title }) {
