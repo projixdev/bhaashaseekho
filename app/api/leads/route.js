@@ -5,18 +5,35 @@ import { sendTransactionalEmail } from "@/lib/brevo";
 import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 import { isHoneypotTriggered } from "@/lib/honeypot";
 import { validateLeadInput, escapeHtml } from "@/lib/validation";
+import { renderEmailLayout, emailButton, getWhatsAppUrl } from "@/lib/emailTemplate";
 
-function buildLeadEmailHtml(body) {
-  return `
-    <h2>New lead from bhaashaseekho.com</h2>
-    <p><strong>Name:</strong> ${escapeHtml(body.name)}</p>
-    <p><strong>Phone:</strong> ${escapeHtml(body.phone)}</p>
-    <p><strong>Email:</strong> ${escapeHtml(body.email)}</p>
-    <p><strong>Interested in:</strong> ${escapeHtml(body.interest)}</p>
-    <p><strong>How they heard about us:</strong> ${escapeHtml(body.howHeard || "-")}</p>
-    <p><strong>UTM source/medium/campaign:</strong> ${escapeHtml(body.utmSource || "-")} /
+function buildOwnerEmailHtml(body) {
+  const inner = `
+    <h2 style="margin:0 0 16px; font-size:18px; color:#0f172a;">New lead</h2>
+    <p style="margin:0 0 8px;"><strong>Name:</strong> ${escapeHtml(body.name)}</p>
+    <p style="margin:0 0 8px;"><strong>Phone:</strong> ${escapeHtml(body.phone)}</p>
+    <p style="margin:0 0 8px;"><strong>Email:</strong> ${escapeHtml(body.email)}</p>
+    <p style="margin:0 0 8px;"><strong>Interested in:</strong> ${escapeHtml(body.interest)}</p>
+    <p style="margin:0 0 8px;"><strong>How they heard about us:</strong> ${escapeHtml(body.howHeard || "-")}</p>
+    <p style="margin:16px 0 0; font-size:13px; color:#64748b;">UTM: ${escapeHtml(body.utmSource || "-")} /
       ${escapeHtml(body.utmMedium || "-")} / ${escapeHtml(body.utmCampaign || "-")}</p>
   `;
+  return renderEmailLayout({ preheader: `New lead: ${body.name} (${body.interest})`, bodyHtml: inner });
+}
+
+function buildUserConfirmationHtml(body) {
+  const whatsappUrl = getWhatsAppUrl();
+
+  const inner = `
+    <p style="margin:0 0 16px;">Hi ${escapeHtml(body.name)},</p>
+    <p style="margin:0 0 20px;">Thanks for your interest in learning ${escapeHtml(body.interest)} with Bhaasha Seekho! We've received your details and our team will reach out to you within 24 hours to help you get started.</p>
+    ${whatsappUrl ? `<p style="margin:0 0 8px;">${emailButton("Chat on WhatsApp", whatsappUrl)}</p>` : ""}
+    <p style="margin:24px 0 0;">— The Bhaasha Seekho Team</p>
+  `;
+  return renderEmailLayout({
+    preheader: "We've received your details and will be in touch within 24 hours.",
+    bodyHtml: inner,
+  });
 }
 
 export async function POST(request) {
@@ -56,19 +73,29 @@ export async function POST(request) {
       utmCampaign: (body.utmCampaign || "").trim(),
     });
 
-    // Brevo notification is best-effort: the lead is already safely in
-    // MongoDB, so a failed notification email shouldn't fail the request.
-    try {
-      const notifyEmail = process.env.CLIENT_NOTIFICATION_EMAIL;
-      if (notifyEmail) {
+    // Both emails are best-effort: the lead is already safely in MongoDB,
+    // so a failed send shouldn't fail the request.
+    const notifyEmail = process.env.CLIENT_NOTIFICATION_EMAIL;
+    if (notifyEmail) {
+      try {
         await sendTransactionalEmail({
           to: notifyEmail,
           subject: `New lead: ${body.name} (${body.interest})`,
-          htmlContent: buildLeadEmailHtml(body),
+          htmlContent: buildOwnerEmailHtml(body),
         });
+      } catch (ownerErr) {
+        console.error("Owner notification failed for lead:", ownerErr);
       }
-    } catch (emailErr) {
-      console.error("Brevo notification failed for lead:", emailErr);
+    }
+
+    try {
+      await sendTransactionalEmail({
+        to: body.email,
+        subject: "We've got your details — Bhaasha Seekho",
+        htmlContent: buildUserConfirmationHtml(body),
+      });
+    } catch (confirmErr) {
+      console.error("Lead confirmation email failed:", confirmErr);
     }
 
     return NextResponse.json({ success: true });
