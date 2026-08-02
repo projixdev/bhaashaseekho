@@ -1,4 +1,5 @@
 import { coursesPage, courses, siteMeta, seo } from "@/content";
+import { getCourseBySlug } from "@/data/courses";
 import CourseCard from "@/components/courses/CourseCard";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildMetadata, breadcrumbSchema, SITE_URL } from "@/lib/seo";
@@ -36,7 +37,12 @@ export default function CoursesPage() {
 
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {courses.map((course) => (
-          <CourseCard key={course.slug} course={course} ctaLabel={coursesPage.cardCtaLabel} />
+          <CourseCard
+            key={course.slug}
+            course={course}
+            ctaLabel={coursesPage.cardCtaLabel}
+            price={getCourseBySlug(course.slug)?.pricing.startingAt}
+          />
         ))}
       </div>
     </div>

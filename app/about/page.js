@@ -1,5 +1,4 @@
 import { about, seo } from "@/content";
-import FounderCard from "@/components/about/FounderCard";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
@@ -21,10 +20,6 @@ export default function AboutPage() {
         {about.story.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
         ))}
-      </div>
-
-      <div className="mt-10">
-        <FounderCard />
       </div>
     </div>
   );

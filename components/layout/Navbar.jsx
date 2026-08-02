@@ -2,16 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { siteMeta, nav } from "@/content";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-
-  // On the homepage, "Get in Touch" scrolls to the single lead form already
-  // on the page. Everywhere else, it links out to the dedicated /register page.
-  const ctaHref = pathname === "/" ? "#lead-form" : nav.ctaHref;
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background">
@@ -41,7 +35,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href={ctaHref}
+            href={nav.ctaHref}
             className="cursor-pointer rounded-md bg-accent px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
             {nav.ctaLabel}
@@ -74,7 +68,7 @@ export default function Navbar() {
             </Link>
           ))}
           <Link
-            href={ctaHref}
+            href={nav.ctaHref}
             onClick={() => setIsOpen(false)}
             className="mt-1 cursor-pointer rounded-md bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white"
           >

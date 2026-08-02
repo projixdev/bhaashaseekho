@@ -8,7 +8,6 @@ import JsonLd from "@/components/seo/JsonLd";
 import CourseHero from "@/components/courses/CourseHero";
 import JourneyTimeline from "@/components/courses/JourneyTimeline";
 import ModuleCard from "@/components/courses/ModuleCard";
-import TutorCard from "@/components/courses/TutorCard";
 import TestimonialCard from "@/components/courses/TestimonialCard";
 import FAQAccordion from "@/components/courses/FAQAccordion";
 
@@ -138,17 +137,6 @@ export default function CourseDetailPage({ params }) {
       </section>
 
       <section className="bg-background py-16">
-        <div className="mx-auto max-w-3xl px-6">
-          <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
-            Meet Your Tutor
-          </h2>
-          <div className="mt-10">
-            <TutorCard tutor={course.tutor} />
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-muted py-16">
         <div className="mx-auto max-w-md px-6 text-center">
           <div className="rounded-xl border border-border bg-background p-8 shadow-sm">
             <p className="text-sm font-medium uppercase tracking-wide text-secondary">Starting at</p>
@@ -165,7 +153,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-background py-16">
+      <section className="bg-muted py-16">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             What Learners Say
@@ -178,7 +166,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-muted py-16">
+      <section className="bg-background py-16">
         <div className="mx-auto max-w-3xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             Frequently Asked Questions

@@ -109,7 +109,7 @@ export const courses = [
     },
     testimonials: [
       {
-        name: "Priya S.",
+        name: "Sowmya H.",
         quote: "I went from knowing a few words to having full conversations with my grandparents in Kannada.",
         rating: 5,
       },
@@ -245,7 +245,7 @@ export const courses = [
     },
     testimonials: [
       {
-        name: "Rahul M.",
+        name: "Rohan K.",
         quote: "My tutor made it easy to keep up even with a busy schedule, and the group made practicing less intimidating.",
         rating: 5,
       },
@@ -381,7 +381,7 @@ export const courses = [
     },
     testimonials: [
       {
-        name: "Ananya K.",
+        name: "Divya S.",
         quote: "I finally feel confident having real conversations with my in-laws in Telugu.",
         rating: 5,
       },

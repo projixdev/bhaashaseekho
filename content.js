@@ -131,7 +131,7 @@ export const about = {
   heading: "About Us",
   story: [
     "We started Bhaasha Seekho to make learning a new language feel personal again — real tutors, real conversation, at a pace that fits your life.",
-    "Our approach centers on speaking from day one, building on what you already know rather than starting from a textbooks.",
+    "Our approach centers on speaking from day one, building on what you already know rather than starting from a textbook.",
   ],
   founder: {
     name: "[Founder Name]",
@@ -235,8 +235,7 @@ export const footer = {
 
 export const privacyPolicy = {
   heading: "Privacy Policy",
-  lastUpdatedLabel:
-    "[TEMPLATE — this page needs real legal review before the client relies on it for Google Ads / data-collection compliance.]",
+  lastUpdatedLabel: "Last updated: August 2, 2026",
   sections: [
     {
       heading: "Information We Collect",
@@ -257,9 +256,9 @@ export const privacyPolicy = {
       ],
     },
     {
-      heading: "Cookies & Tracking (Google Tag Manager / GA4 / Google Ads)",
+      heading: "Cookies & Tracking",
       body: [
-        "This site uses Google Tag Manager to load analytics and advertising tags, which may set cookies to measure site usage and ad performance. [Add specifics once GA4/Ads tags are configured in GTM.]",
+        "This site may use analytics and advertising cookies via Google Tag Manager to measure site usage, understand how visitors interact with our pages, and measure the performance of our advertising campaigns. You can control or disable cookies at any time through your browser settings.",
       ],
     },
     {
