@@ -131,7 +131,7 @@ export const about = {
   heading: "About Us",
   story: [
     "We started Bhaasha Seekho to make learning a new language feel personal again — real tutors, real conversation, at a pace that fits your life.",
-    "Our approach centers on speaking from day one, building on what you already know rather than starting from a textbook.",
+    "Our approach centers on speaking from day one, building on what you already know rather than starting from a textbooks.",
   ],
   founder: {
     name: "[Founder Name]",
