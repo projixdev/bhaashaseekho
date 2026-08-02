@@ -14,7 +14,50 @@ export const siteMeta = {
   name: "Bhaasha Seekho",
   tagline: "Learn a new language, on your schedule",
   description: "Personalized live online language classes with experienced tutors.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://bhaashaseekho.com",
+  // Canonical production URL — deliberately hardcoded (not env-driven) so
+  // metadata/sitemap/robots can never leak a preview or .vercel.app domain.
+  url: "https://www.bhaashaseekho.com",
+};
+
+// Per-page <title>/description copy for the Metadata API. Titles are short —
+// the root layout's title.template appends "| Bhaasha Seekho" — and
+// descriptions are sized to Google's ~150-160 char snippet window.
+export const seo = {
+  home: {
+    title: "Bhaasha Seekho – Live Online Language Classes",
+    description:
+      "Learn Kannada, Hindi, or Telugu with live 1-on-1 and group online classes. Personalized lessons with experienced tutors, on a schedule that fits you best.",
+  },
+  about: {
+    title: "About Us",
+    description:
+      "Meet the team behind Bhaasha Seekho. We're on a mission to make learning Kannada, Hindi, and Telugu feel personal, conversational, and built around you.",
+  },
+  courses: {
+    title: "Language Courses",
+    description:
+      "Explore live, tutor-led Kannada, Hindi, and Telugu courses at Bhaasha Seekho. Flexible scheduling and personalized lessons for real conversational fluency.",
+  },
+  contact: {
+    title: "Contact Us",
+    description:
+      "Get in touch with Bhaasha Seekho on WhatsApp, email, or phone. We're happy to answer questions about our live online Kannada, Hindi, and Telugu classes.",
+  },
+  register: {
+    title: "Get Started",
+    description:
+      "Start your language learning journey with Bhaasha Seekho. Tell us your goals and we'll match you with a tutor for live Kannada, Hindi, or Telugu classes.",
+  },
+  privacyPolicy: {
+    title: "Privacy Policy",
+    description:
+      "Read the Bhaasha Seekho privacy policy to learn how we collect, use, and protect your personal information when you contact us or register for classes.",
+  },
+  notFound: {
+    title: "Page Not Found",
+    description:
+      "The page you're looking for doesn't exist or may have moved. Return to Bhaasha Seekho to explore our live online Kannada, Hindi, and Telugu language classes.",
+  },
 };
 
 export const nav = {

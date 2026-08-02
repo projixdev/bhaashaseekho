@@ -1,6 +1,7 @@
 import { Poppins, Open_Sans } from "next/font/google";
 import "./globals.css";
-import { siteMeta } from "@/content";
+import { siteMeta, seo } from "@/content";
+import { SITE_URL, OG_IMAGE } from "@/lib/seo";
 import { GTMHeadScript, GTMNoScript } from "@/components/layout/GTMScripts";
 import UtmCapture from "@/components/UtmCapture";
 import Navbar from "@/components/layout/Navbar";
@@ -20,8 +21,25 @@ const openSans = Open_Sans({
 });
 
 export const metadata = {
-  title: `${siteMeta.name} — ${siteMeta.tagline}`,
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: seo.home.title,
+    template: `%s | ${siteMeta.name}`,
+  },
   description: siteMeta.description,
+  openGraph: {
+    siteName: siteMeta.name,
+    type: "website",
+    locale: "en_US",
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [OG_IMAGE.url],
+  },
+  verification: {
+    google: "UpCZJhLyssPFts5nMeD7w43ppYd268ebLBwXkIIf-Rg",
+  },
 };
 
 export default function RootLayout({ children }) {

@@ -1,11 +1,20 @@
-import { about } from "@/content";
+import { about, seo } from "@/content";
 import FounderCard from "@/components/about/FounderCard";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
-export const metadata = { title: about.heading };
+export const metadata = buildMetadata({
+  title: seo.about.title,
+  description: seo.about.description,
+  path: "/about",
+});
+
+const breadcrumbs = breadcrumbSchema([{ name: "About Us", path: "/about" }]);
 
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
+      <JsonLd data={breadcrumbs} />
       <h1 className="font-heading text-3xl font-bold text-foreground">{about.heading}</h1>
 
       <div className="mt-6 flex flex-col gap-4 text-secondary">

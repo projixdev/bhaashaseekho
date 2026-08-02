@@ -1,8 +1,16 @@
-import { contactPage } from "@/content";
+import { contactPage, seo } from "@/content";
 import ContactForm from "@/components/forms/ContactForm";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
-export const metadata = { title: contactPage.heading };
+export const metadata = buildMetadata({
+  title: seo.contact.title,
+  description: seo.contact.description,
+  path: "/contact",
+});
+
+const breadcrumbs = breadcrumbSchema([{ name: "Contact Us", path: "/contact" }]);
 
 // Support/query page — WhatsApp is the primary path, with a lightweight
 // optional-message form as a fallback. This is NOT lead capture; that lives
@@ -10,6 +18,7 @@ export const metadata = { title: contactPage.heading };
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-xl px-6 py-16">
+      <JsonLd data={breadcrumbs} />
       <h1 className="font-heading text-3xl font-bold text-foreground">{contactPage.heading}</h1>
       <p className="mt-2 text-secondary">{contactPage.subheading}</p>
 
