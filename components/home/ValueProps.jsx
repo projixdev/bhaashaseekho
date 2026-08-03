@@ -13,7 +13,7 @@ const ICONS = [
 
 export default function ValueProps() {
   return (
-    <section className="bg-muted py-16">
+    <section className="bg-muted py-8">
       <div className="mx-auto max-w-6xl px-6">
         <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
           {home.valueProps.heading}

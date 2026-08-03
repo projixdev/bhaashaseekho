@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-background">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
         {/*
           A dedicated vector lockup (icon + wordmark already composed
           correctly, 680x140 viewBox) — SVGs stay crisp at any size, unlike

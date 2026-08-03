@@ -4,7 +4,7 @@ import CourseCard from "@/components/courses/CourseCard";
 
 export default function CoursesPreview() {
   return (
-    <section className="bg-background py-16">
+    <section className="bg-background py-8">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">

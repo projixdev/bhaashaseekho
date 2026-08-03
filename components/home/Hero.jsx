@@ -3,7 +3,7 @@ import HeroIllustration from "@/components/home/HeroIllustration";
 
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-16 text-center">
+    <section className="mx-auto max-w-3xl px-6 py-8 text-center">
       <span className="inline-block rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent">
         {home.hero.eyebrow}
       </span>
