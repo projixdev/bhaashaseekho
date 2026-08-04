@@ -5,17 +5,19 @@
 :root {
   --color-background: #ffffff;
   --color-foreground: #0f172a;
-  /* One signature mint-blue hue (teal), varied by shade/tint rather than a
-     second hue — primary and accent intentionally share the same color. */
-  --color-primary: #0d9488;
+  /* One signature indigo-blue hue, varied by shade/tint rather than a
+     second hue — primary and accent intentionally share the same color.
+     Border uses a neutral slate instead of a pale tint of the brand color,
+     so inputs look defined, not disabled. */
+  --color-primary: #4f46e5;
   --color-on-primary: #ffffff;
   --color-secondary: #334155;
-  --color-accent: #0d9488;
-  --color-accent-soft: #ccfbf1;
-  --color-muted: #f0fdfa;
-  --color-border: #d1e9e5;
+  --color-accent: #4f46e5;
+  --color-accent-soft: #e0e7ff;
+  --color-muted: #eef2ff;
+  --color-border: #cbd5e1;
   --color-destructive: #dc2626;
-  --color-ring: #0d9488;
+  --color-ring: #4f46e5;
 }
 
 body {

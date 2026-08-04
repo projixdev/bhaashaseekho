@@ -12,9 +12,8 @@ function buildOwnerEmailHtml(body) {
     <h2 style="margin:0 0 16px; font-size:18px; color:#0f172a;">New lead</h2>
     <p style="margin:0 0 8px;"><strong>Name:</strong> ${escapeHtml(body.name)}</p>
     <p style="margin:0 0 8px;"><strong>Phone:</strong> ${escapeHtml(body.phone)}</p>
-    <p style="margin:0 0 8px;"><strong>Email:</strong> ${escapeHtml(body.email)}</p>
+    <p style="margin:0 0 8px;"><strong>Email:</strong> ${escapeHtml(body.email || "-")}</p>
     <p style="margin:0 0 8px;"><strong>Interested in:</strong> ${escapeHtml(body.interest)}</p>
-    <p style="margin:0 0 8px;"><strong>How they heard about us:</strong> ${escapeHtml(body.howHeard || "-")}</p>
     <p style="margin:16px 0 0; font-size:13px; color:#64748b;">UTM: ${escapeHtml(body.utmSource || "-")} /
       ${escapeHtml(body.utmMedium || "-")} / ${escapeHtml(body.utmCampaign || "-")}</p>
   `;
@@ -65,9 +64,8 @@ export async function POST(request) {
     await Lead.create({
       name: body.name.trim(),
       phone: body.phone.trim(),
-      email: body.email.trim().toLowerCase(),
+      email: (body.email || "").trim().toLowerCase(),
       interest: body.interest.trim(),
-      howHeard: (body.howHeard || "").trim(),
       utmSource: (body.utmSource || "").trim(),
       utmMedium: (body.utmMedium || "").trim(),
       utmCampaign: (body.utmCampaign || "").trim(),
@@ -88,14 +86,18 @@ export async function POST(request) {
       }
     }
 
-    try {
-      await sendTransactionalEmail({
-        to: body.email,
-        subject: "We've got your details — Bhaasha Seekho",
-        htmlContent: buildUserConfirmationHtml(body),
-      });
-    } catch (confirmErr) {
-      console.error("Lead confirmation email failed:", confirmErr);
+    // Only the owner notification is guaranteed — the visitor confirmation
+    // email requires an email address, which is now optional on this form.
+    if (body.email) {
+      try {
+        await sendTransactionalEmail({
+          to: body.email,
+          subject: "We've got your details — Bhaasha Seekho",
+          htmlContent: buildUserConfirmationHtml(body),
+        });
+      } catch (confirmErr) {
+        console.error("Lead confirmation email failed:", confirmErr);
+      }
     }
 
     return NextResponse.json({ success: true });

@@ -5,8 +5,7 @@ import { registerPage } from "@/content";
 import { getStoredUtmParams } from "@/lib/utm";
 import FormField from "@/components/forms/FormField";
 
-const { fields, interestOptions, howHeardOptions, submitLabel, successMessage, errorMessage } =
-  registerPage.form;
+const { fields, interestOptions, submitLabel, successMessage, errorMessage } = registerPage.form;
 
 function pushLeadSubmitEvent() {
   if (typeof window === "undefined") return;
@@ -23,7 +22,6 @@ export default function RegisterForm() {
     phone: "",
     email: "",
     interest: "",
-    howHeard: "",
     honeypot: "",
   });
   const [errors, setErrors] = useState({});
@@ -57,7 +55,7 @@ export default function RegisterForm() {
 
       setStatus("success");
       pushLeadSubmitEvent();
-      setValues({ name: "", phone: "", email: "", interest: "", howHeard: "", honeypot: "" });
+      setValues({ name: "", phone: "", email: "", interest: "", honeypot: "" });
     } catch {
       setStatus("error");
     }
@@ -97,7 +95,6 @@ export default function RegisterForm() {
         value={values.email}
         onChange={handleChange}
         error={errors.email}
-        required
       />
       <FormField
         label={fields.interest}
@@ -108,15 +105,6 @@ export default function RegisterForm() {
         onChange={handleChange}
         error={errors.interest}
         required
-      />
-      <FormField
-        label={fields.howHeard}
-        name="howHeard"
-        as="select"
-        options={howHeardOptions}
-        value={values.howHeard}
-        onChange={handleChange}
-        error={errors.howHeard}
       />
 
       {/* Honeypot: visually hidden from real visitors, bots that fill every field trip it */}

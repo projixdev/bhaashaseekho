@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { siteMeta, footer } from "@/content";
 
 export default function Footer() {
@@ -6,8 +7,8 @@ export default function Footer() {
     <footer className="border-t border-border bg-muted">
       <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 sm:grid-cols-2 lg:grid-cols-5">
         <div className="sm:col-span-2 lg:col-span-1">
-          <p className="font-heading text-lg font-semibold text-foreground">{siteMeta.name}</p>
-          <p className="mt-2 max-w-xs text-sm text-secondary">{siteMeta.description}</p>
+          <Image src="/image.png" alt={siteMeta.name} width={64} height={64} className="h-16 w-16" />
+          <p className="mt-3 max-w-xs text-sm text-secondary">{siteMeta.description}</p>
         </div>
 
         {footer.columns.map((column) => (

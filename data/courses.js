@@ -12,7 +12,7 @@ export const courses = [
     name: "Kannada",
     nativeScript: "ಕನ್ನಡ",
     tagline: "12-week tutor-led course for real spoken fluency",
-    themeColor: "#0d9488",
+    themeColor: "#4f46e5",
     trustBadge: "Live, tutor-led sessions",
     whoIsThisFor: [
       "Beginners who want to speak Kannada confidently in everyday conversations",
@@ -160,7 +160,7 @@ export const courses = [
     name: "Hindi",
     nativeScript: "हिन्दी",
     tagline: "10-week course to speak Hindi naturally, from day one",
-    themeColor: "#0e7490",
+    themeColor: "#2563eb",
     trustBadge: "Small-group, tutor-led classes",
     whoIsThisFor: [
       "Beginners who want to hold everyday conversations in Hindi",
@@ -304,7 +304,7 @@ export const courses = [
     name: "Telugu",
     nativeScript: "తెలుగు",
     tagline: "12-week tutor-led course for confident spoken Telugu",
-    themeColor: "#047857",
+    themeColor: "#7c3aed",
     trustBadge: "Live, tutor-led sessions",
     whoIsThisFor: [
       "Beginners who want to speak Telugu confidently in daily life",

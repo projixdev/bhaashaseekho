@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { IconChevronDown } from "@tabler/icons-react";
 import { siteMeta, nav, courses } from "@/content";
 
@@ -12,17 +13,14 @@ export default function Navbar() {
     <header className="sticky top-0 z-30 border-b border-border bg-background">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
         {/*
-          A dedicated vector lockup (icon + wordmark already composed
-          correctly, 680x140 viewBox) — SVGs stay crisp at any size, unlike
-          the raster logo.png/logo1.png files, so no cropping/scaling hacks
-          are needed here. Plain <img>, not next/image: Next's built-in
-          optimizer can't process local SVGs (confirmed — it 400s even with
-          dangerouslyAllowSVG on), and there's no resizing/format-conversion
-          benefit to be had for a 4KB vector file anyway.
+          Square lockup (icon + wordmark + tagline stacked, 1254x1254) — sized
+          up from the old horizontal SVG's 40px so the mark reads clearly
+          instead of shrinking to an illegible dot. next/image (not a plain
+          <img>) since this is a 1.2MB raster PNG that needs real
+          optimization/resizing, unlike the old 4KB SVG.
         */}
         <Link href="/" className="flex shrink-0 items-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/bhaasha_seekho_navbar_logo.svg" alt={siteMeta.name} width={194} height={40} className="h-10 w-auto" />
+          <Image src="/image.png" alt={siteMeta.name} width={64} height={64} priority className="h-16 w-16" />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">
