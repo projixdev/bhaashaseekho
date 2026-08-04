@@ -29,7 +29,7 @@ export default function CourseHero({ course }) {
           className="mt-8 inline-block cursor-pointer rounded-md bg-white px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90"
           style={{ color: course.themeColor }}
         >
-          Get in Touch
+          Book a Trial Class
         </Link>
       </div>
     </section>

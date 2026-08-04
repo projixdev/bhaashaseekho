@@ -8,6 +8,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import CourseHero from "@/components/courses/CourseHero";
 import JourneyTimeline from "@/components/courses/JourneyTimeline";
 import ModuleCard from "@/components/courses/ModuleCard";
+import TutorCard from "@/components/courses/TutorCard";
 import TestimonialCard from "@/components/courses/TestimonialCard";
 import FAQAccordion from "@/components/courses/FAQAccordion";
 
@@ -99,6 +100,22 @@ export default function CourseDetailPage({ params }) {
       <section className="bg-muted py-8">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
+            What Would You Like to Achieve in {course.name}?
+          </h2>
+          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {course.goals.map((goal) => (
+              <div key={goal.title} className="rounded-lg border border-border bg-background p-5">
+                <p className="font-heading font-semibold text-foreground">{goal.title}</p>
+                <p className="mt-2 text-sm text-secondary">{goal.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background py-8">
+        <div className="mx-auto max-w-5xl px-6">
+          <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             Your Learning Journey
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-secondary">
@@ -110,7 +127,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-background py-8">
+      <section className="bg-muted py-8">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             What You&rsquo;ll Learn
@@ -123,7 +140,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-muted py-8">
+      <section className="bg-background py-8">
         <div className="mx-auto max-w-4xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">Course Format</h2>
           <div className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-4">
@@ -133,6 +150,17 @@ export default function CourseDetailPage({ params }) {
             <FormatItem icon={IconUsers} label="Batch Type" value={course.format.batchType} themeColor={course.themeColor} />
           </div>
           <p className="mt-6 text-center text-sm text-secondary">Held on {course.format.platform}</p>
+        </div>
+      </section>
+
+      <section className="bg-muted py-8">
+        <div className="mx-auto max-w-3xl px-6">
+          <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
+            Meet Your Tutor
+          </h2>
+          <div className="mt-10">
+            <TutorCard tutor={course.tutor} />
+          </div>
         </div>
       </section>
 
@@ -147,7 +175,7 @@ export default function CourseDetailPage({ params }) {
               className="mt-6 inline-block cursor-pointer rounded-md px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
               style={{ backgroundColor: course.themeColor }}
             >
-              Get in Touch
+              Book a Trial Class
             </Link>
           </div>
         </div>
@@ -182,13 +210,13 @@ export default function CourseDetailPage({ params }) {
           <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
             Ready to Start Learning {course.name}?
           </h2>
-          <p className="mt-2 text-white/80">Get in touch and we&rsquo;ll help you get started.</p>
+          <p className="mt-2 text-white/80">Book a trial class and we&rsquo;ll help you get started.</p>
           <Link
             href="/register"
             className="mt-6 inline-block cursor-pointer rounded-md bg-white px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90"
             style={{ color: course.themeColor }}
           >
-            Get in Touch
+            Book a Trial Class
           </Link>
         </div>
       </section>

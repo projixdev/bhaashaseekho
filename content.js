@@ -53,6 +53,11 @@ export const seo = {
     description:
       "Read the Bhaasha Seekho privacy policy to learn how we collect, use, and protect your personal information when you contact us or register for classes.",
   },
+  refundPolicy: {
+    title: "Refund & Cancellation Policy",
+    description:
+      "Read the Bhaasha Seekho refund and cancellation policy to understand how trial classes, class packages, and rescheduling are handled.",
+  },
   notFound: {
     title: "Page Not Found",
     description:
@@ -62,36 +67,122 @@ export const seo = {
 
 export const nav = {
   links: [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about" },
+    { label: "Languages", href: "/#languages" },
     { label: "Courses", href: "/courses" },
-    { label: "Contact", href: "/contact" },
+    { label: "How It Works", href: "/#how-it-works" },
+    { label: "Reviews", href: "/#reviews" },
+    { label: "About", href: "/about" },
   ],
-  ctaLabel: "Get in Touch",
+  ctaLabel: "Book a Trial Class",
   ctaHref: "/register",
 };
 
 export const home = {
   hero: {
-    eyebrow: "Trusted by learners everywhere",
-    headline: "Speak a New Language with Confidence",
-    subheadline: "Live one-on-one and group classes built around your goals and your schedule.",
-    primaryCtaLabel: "Get in Touch",
+    eyebrow: "Live, tutor-led classes",
+    headline: "Learn a Language. Speak with Confidence.",
+    subheadline: "Live 1-on-1 & group language classes with experienced tutors.",
+    languageLine: "Learn Kannada, Hindi & Telugu",
+    // Shown as small tags under the language line — the four goals the
+    // "What Would You Like to Achieve?" section below expands on.
+    goalTags: ["Spoken Language", "Reading & Writing", "Academics", "Competitive Exams"],
+    primaryCtaLabel: "Book a Trial Class",
+    secondaryCtaLabel: "Explore Languages",
+    // No fabricated rating here — only claims we can actually stand behind.
+    trustBadges: ["Experienced Tutors", "Flexible Scheduling", "Learn From Anywhere"],
+    videoLabel: "See How Bhaasha Seekho Works",
+    videoNote: "60 sec",
+  },
+  // Quick-pick language cards, right after the hero.
+  languageSelector: {
+    heading: "Which Language Would You Like to Learn?",
+    subheading: "Pick a language to see the course, format, and how to get started.",
+  },
+  // "What do you want to achieve" — goal-first framing. All four route into
+  // the existing /courses page rather than separate product lines, since
+  // spoken/reading-writing/academic/exam-prep aren't sold as distinct
+  // standalone courses today.
+  goals: {
+    heading: "What Would You Like to Achieve?",
+    subheading: "Tell us your goal, and we'll help you find the right course.",
+    items: [
+      {
+        title: "Speak Confidently",
+        subtitle: "Spoken Language",
+        description: "Build confidence for everyday conversations, work, travel, and social situations.",
+      },
+      {
+        title: "Learn Reading & Writing",
+        subtitle: "Reading & Writing",
+        description: "Learn the script, pronunciation, vocabulary, grammar, and written communication.",
+      },
+      {
+        title: "Improve Academic Performance",
+        subtitle: "Academic Support",
+        description: "Personalized support for school students, syllabus preparation, and exams.",
+      },
+      {
+        title: "Prepare for Competitive Exams",
+        subtitle: "Exam Preparation",
+        description: "Structured language preparation for competitive and qualifying examinations.",
+      },
+    ],
+    ctaLabel: "Explore Courses",
+    ctaHref: "/courses",
+  },
+  classVideo: {
+    heading: "See What a Bhaasha Seekho Class Looks Like",
+    subheading: "Watch a real teaching interaction from one of our live classes.",
+    videoLabel: "Watch a Sample Class",
+    videoNote: "90 sec",
+  },
+  howItWorks: {
+    heading: "Start Learning in 3 Simple Steps",
+    steps: [
+      { step: "1", title: "Choose Your Language", description: "Select the language and your learning goal." },
+      { step: "2", title: "Meet Your Tutor", description: "Take a trial class and discuss your goals." },
+      {
+        step: "3",
+        title: "Start Learning",
+        description: "Get a personalized learning plan and schedule classes at times that work for you.",
+      },
+    ],
+    ctaLabel: "Book Your Trial Class",
   },
   valueProps: {
-    heading: "Why Learn With Us",
+    heading: "Why Learners Choose Bhaasha Seekho",
     items: [
       {
         title: "Experienced Tutors",
-        description: "Learn from tutors who bring real teaching experience to every lesson.",
+        description: "Learn from qualified tutors who bring real teaching experience to every lesson.",
+      },
+      {
+        title: "Goal-Based Learning",
+        description: "Spoken fluency, academics, reading & writing, or exam prep — lessons built around your goal.",
+      },
+      {
+        title: "1-on-1 Classes",
+        description: "Personal attention and lessons at your own pace.",
+      },
+      {
+        title: "Group Classes",
+        description: "Learn interactively in small, affordable batches.",
       },
       {
         title: "Flexible Scheduling",
         description: "Book classes around your routine, with times that actually work for you.",
       },
       {
-        title: "Personalized Curriculum",
-        description: "Lessons shaped around your goals, pace, and current level.",
+        title: "Learn From Anywhere",
+        description: "Live online classes, accessible wherever you are.",
+      },
+      {
+        title: "Structured Curriculum",
+        description: "Progress systematically from fundamentals to confident, real-world usage.",
+      },
+      {
+        title: "Real Conversation Practice",
+        description: "Don't just memorize grammar — learn to actually use the language.",
       },
     ],
   },
@@ -99,6 +190,17 @@ export const home = {
     heading: "Our Courses",
     viewAllLabel: "View All Courses",
     viewAllHref: "/courses",
+  },
+  beforeAfter: {
+    heading: "From “I Understand” to “I Can Speak”",
+    before: {
+      label: "Before Bhaasha Seekho",
+      items: ["Hesitant to speak", "Struggling with pronunciation", "Confused by grammar", "Can understand but can't respond"],
+    },
+    after: {
+      label: "After Structured Learning",
+      items: ["Speak more confidently", "Build practical vocabulary", "Understand sentence patterns", "Communicate in real situations"],
+    },
   },
   // Dummy testimonial data, per client request — swap for real
   // quotes/names whenever they're available.
@@ -108,22 +210,81 @@ export const home = {
       {
         name: "Priya S.",
         quote: "The lessons were engaging and I could see real progress every week.",
+        rating: 5,
       },
       {
         name: "Rahul M.",
         quote: "My tutor made it easy to keep up even with a busy schedule.",
+        rating: 5,
       },
       {
         name: "Ananya K.",
         quote: "I finally feel confident having real conversations.",
+        rating: 4,
+      },
+    ],
+  },
+  // Dummy trust numbers, per client request — real track record is from
+  // other platforms (Udemy, UrbanPro, etc.), not this site specifically yet.
+  // Swap for real, verifiable numbers once available. Kept consistent with
+  // what's actually shown elsewhere (3 languages, one named tutor per
+  // language) rather than inflated figures that would contradict the rest
+  // of the site.
+  trustStats: {
+    heading: "Learning Languages. Connecting People.",
+    items: [
+      { value: "500+", label: "Students Taught" },
+      { value: "3", label: "Languages Offered" },
+      { value: "4.9/5", label: "Average Rating" },
+    ],
+  },
+  audiences: {
+    heading: "Language Learning for Every Goal",
+    items: [
+      { title: "Working Professionals", description: "Communicate confidently with colleagues and clients." },
+      { title: "Students", description: "Academic support and examination preparation." },
+      { title: "Non-Native Speakers", description: "Learn the language for everyday life and real conversation." },
+      { title: "People Relocating", description: "Communicate comfortably in a new city or state." },
+      { title: "Competitive Exam Aspirants", description: "Structured language preparation for exams." },
+    ],
+  },
+  faq: {
+    heading: "Frequently Asked Questions",
+    items: [
+      {
+        question: "Can I take a trial class?",
+        answer: "Yes — book a trial class and we'll match you with a tutor to get started.",
+      },
+      {
+        question: "Are classes one-on-one or in a group?",
+        answer: "Both formats are available. Choose whichever fits your learning style and budget.",
+      },
+      {
+        question: "Can I choose my tutor and class timings?",
+        answer: "Yes, we work with you to schedule classes at times that suit your routine.",
+      },
+      {
+        question: "Do you teach complete beginners?",
+        answer: "Yes — our courses are designed for complete beginners as well as learners with some existing knowledge.",
+      },
+      {
+        question: "Do you provide academic or exam-focused classes?",
+        answer:
+          "Yes, alongside spoken language classes we offer support for academic learners and competitive exam preparation.",
+      },
+      {
+        question: "What happens if I miss a class?",
+        answer: "Let your tutor know in advance where possible, and your session can be rescheduled.",
       },
     ],
   },
   // The single lead-capture form at the bottom of the homepage, right
   // before the footer — the only full form on the page.
   leadForm: {
-    heading: "Ready to Start Learning?",
-    subheading: "Tell us a bit about your goals and we'll get in touch.",
+    heading: "Ready to Start Speaking a New Language?",
+    subheading: "Learn with an experienced tutor at your own pace, from anywhere.",
+    helperText: "Not sure which course to choose? We'll help you find the right one.",
+    whatsappCtaLabel: "WhatsApp Us",
   },
 };
 
@@ -162,7 +323,7 @@ export const courses = [
 export const coursesPage = {
   heading: "Our Courses",
   subheading: "Choose a course to get started — reach out and we'll take it from there.",
-  cardCtaLabel: "Get in Touch",
+  cardCtaLabel: "Book a Trial Class",
 };
 
 // /contact is a support/query page, not lead capture — WhatsApp is the
@@ -195,7 +356,7 @@ export const contactPage = {
 };
 
 export const registerPage = {
-  heading: "Start Your Language Learning Journey",
+  heading: "Book Your Trial Class",
   subheading: "Fill out the form below and we'll reach out to help you get started.",
   form: {
     fields: {
@@ -215,14 +376,48 @@ export const registerPage = {
       "Friend / Family Referral",
       "Other",
     ],
-    submitLabel: "Get in Touch",
+    submitLabel: "Book Trial Class",
     successMessage: "Thanks! We'll reach out to you shortly.",
     errorMessage: "Something went wrong. Please try again or WhatsApp us directly.",
   },
 };
 
 export const footer = {
-  quickLinksHeading: "Quick Links",
+  columns: [
+    {
+      heading: "Bhaasha Seekho",
+      links: [
+        { label: "About Us", href: "/about" },
+        { label: "Reviews", href: "/#reviews" },
+        { label: "Contact", href: "/contact" },
+      ],
+    },
+    {
+      heading: "Languages",
+      links: [
+        { label: "Kannada", href: "/courses/kannada" },
+        { label: "Hindi", href: "/courses/hindi" },
+        { label: "Telugu", href: "/courses/telugu" },
+      ],
+    },
+    {
+      heading: "Courses",
+      links: [
+        { label: "Spoken Language", href: "/courses" },
+        { label: "Reading & Writing", href: "/courses" },
+        { label: "Academic Support", href: "/courses" },
+        { label: "Exam Preparation", href: "/courses" },
+      ],
+    },
+    {
+      heading: "Support",
+      links: [
+        { label: "FAQs", href: "/#faq" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Refund & Cancellation Policy", href: "/refund-policy" },
+      ],
+    },
+  ],
   contactHeading: "Contact",
   contact: {
     email: "bhaashaseekho@gmail.com",
@@ -271,6 +466,49 @@ export const privacyPolicy = {
       heading: "Your Rights",
       body: [
         "You may request access to, correction of, or deletion of your personal information by contacting us using the details below.",
+      ],
+    },
+    {
+      heading: "Contact Us",
+      body: ["bhaashaseekho@gmail.com"],
+    },
+  ],
+};
+
+// Placeholder policy, per client request — generic, conservative terms for
+// now. Swap for the client's real refund/cancellation terms once decided.
+export const refundPolicy = {
+  heading: "Refund & Cancellation Policy",
+  lastUpdatedLabel: "Last updated: August 2, 2026",
+  sections: [
+    {
+      heading: "Trial Classes",
+      body: [
+        "Trial classes are offered free of charge and are not eligible for a refund, as no payment is made for them.",
+      ],
+    },
+    {
+      heading: "Class Packages",
+      body: [
+        "Once a class package has been purchased and classes have begun, fees are generally non-refundable. Exceptions may be considered on a case-by-case basis — contact us to discuss your situation.",
+      ],
+    },
+    {
+      heading: "Cancellations by You",
+      body: [
+        "You may cancel or reschedule an upcoming class by informing your tutor or our team with reasonable advance notice.",
+      ],
+    },
+    {
+      heading: "Cancellations by Us",
+      body: [
+        "If we're unable to conduct a scheduled class, we'll offer a makeup session or, where that isn't possible, a credit toward a future class.",
+      ],
+    },
+    {
+      heading: "How to Request a Refund",
+      body: [
+        "To request a refund or discuss a cancellation, contact us using the details below and we'll respond within a few business days.",
       ],
     },
     {

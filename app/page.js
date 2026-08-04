@@ -1,7 +1,14 @@
 import Hero from "@/components/home/Hero";
+import LanguageSelector from "@/components/home/LanguageSelector";
+import GoalCards from "@/components/home/GoalCards";
+import HowItWorksSteps from "@/components/home/HowItWorksSteps";
+import ClassVideo from "@/components/home/ClassVideo";
 import ValueProps from "@/components/home/ValueProps";
-import CoursesPreview from "@/components/home/CoursesPreview";
+import BeforeAfter from "@/components/home/BeforeAfter";
+import TrustStats from "@/components/home/TrustStats";
 import Testimonials from "@/components/home/Testimonials";
+import AudienceSection from "@/components/home/AudienceSection";
+import FAQSection from "@/components/home/FAQSection";
 import LeadCaptureSection from "@/components/home/LeadCaptureSection";
 import JsonLd from "@/components/seo/JsonLd";
 import { siteMeta, seo } from "@/content";
@@ -27,9 +34,16 @@ export default function HomePage() {
     <>
       <JsonLd data={organizationSchema} />
       <Hero />
+      <LanguageSelector />
+      <GoalCards />
+      <HowItWorksSteps />
+      <ClassVideo />
       <ValueProps />
-      <CoursesPreview />
+      <BeforeAfter />
+      <TrustStats />
       <Testimonials />
+      <AudienceSection />
+      <FAQSection />
       <LeadCaptureSection />
     </>
   );

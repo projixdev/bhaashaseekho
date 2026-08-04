@@ -12,7 +12,7 @@ export const courses = [
     name: "Kannada",
     nativeScript: "ಕನ್ನಡ",
     tagline: "12-week tutor-led course for real spoken fluency",
-    themeColor: "#0f172a",
+    themeColor: "#0d9488",
     trustBadge: "Live, tutor-led sessions",
     whoIsThisFor: [
       "Beginners who want to speak Kannada confidently in everyday conversations",
@@ -97,16 +97,28 @@ export const courses = [
       frequency: "2x/week",
       batchType: "1-on-1",
     },
+    // Dummy tutor data, per client request — swap for the real tutor's
+    // name, photo, rating, and student count whenever they're available.
     tutor: {
-      name: "[Tutor Name]",
+      name: "Nagesh R.",
       photoUrl: "",
+      rating: 4.9,
+      studentsCount: "500+",
       bio: "A native Kannada speaker with years of experience teaching adult learners, focused on building real conversational confidence rather than rote memorization.",
       credentials: ["Native speaker", "5+ years teaching", "Adult learner specialist"],
     },
+    // Placeholder pricing, per client request — swap for real pricing
+    // whenever it's finalized.
     pricing: {
-      startingAt: "₹2,999/month",
+      startingAt: "₹999/month",
       note: "Custom quote available for group batches.",
     },
+    goals: [
+      { title: "Speak Kannada Confidently", description: "Everyday conversations, work, travel, and social situations." },
+      { title: "Kannada Reading & Writing", description: "Script, pronunciation, vocabulary, and written communication." },
+      { title: "Kannada for Academics", description: "Support for school students, syllabus prep, and exams." },
+      { title: "Kannada for Competitive Exams", description: "Structured prep for competitive and qualifying exams." },
+    ],
     testimonials: [
       {
         name: "Sowmya H.",
@@ -148,7 +160,7 @@ export const courses = [
     name: "Hindi",
     nativeScript: "हिन्दी",
     tagline: "10-week course to speak Hindi naturally, from day one",
-    themeColor: "#b45309",
+    themeColor: "#0e7490",
     trustBadge: "Small-group, tutor-led classes",
     whoIsThisFor: [
       "Beginners who want to hold everyday conversations in Hindi",
@@ -234,15 +246,23 @@ export const courses = [
       batchType: "Group",
     },
     tutor: {
-      name: "[Tutor Name]",
+      name: "Pooja Sharma",
       photoUrl: "",
+      rating: 4.8,
+      studentsCount: "400+",
       bio: "An experienced Hindi language tutor who specializes in teaching adult learners through conversation-first methods rather than heavy grammar drills.",
       credentials: ["Native speaker", "6+ years teaching", "Group facilitation specialist"],
     },
     pricing: {
-      startingAt: "₹1,999/month",
+      startingAt: "₹999/month",
       note: "1-on-1 sessions available on request at a custom rate.",
     },
+    goals: [
+      { title: "Speak Hindi Confidently", description: "Everyday conversations, work, travel, and social situations." },
+      { title: "Hindi Reading & Writing", description: "Devanagari script, vocabulary, and written communication." },
+      { title: "Hindi for Academics", description: "Support for school students, syllabus prep, and exams." },
+      { title: "Hindi for Competitive Exams", description: "Structured prep for competitive and qualifying exams." },
+    ],
     testimonials: [
       {
         name: "Rohan K.",
@@ -284,7 +304,7 @@ export const courses = [
     name: "Telugu",
     nativeScript: "తెలుగు",
     tagline: "12-week tutor-led course for confident spoken Telugu",
-    themeColor: "#0f766d",
+    themeColor: "#047857",
     trustBadge: "Live, tutor-led sessions",
     whoIsThisFor: [
       "Beginners who want to speak Telugu confidently in daily life",
@@ -370,15 +390,23 @@ export const courses = [
       batchType: "1-on-1",
     },
     tutor: {
-      name: "[Tutor Name]",
+      name: "Srinivas K.",
       photoUrl: "",
+      rating: 4.9,
+      studentsCount: "350+",
       bio: "A native Telugu speaker with a background in teaching adult learners, focused on practical spoken fluency over rote grammar study.",
       credentials: ["Native speaker", "4+ years teaching", "Adult learner specialist"],
     },
     pricing: {
-      startingAt: "₹2,999/month",
+      startingAt: "₹999/month",
       note: "Custom quote available for group batches.",
     },
+    goals: [
+      { title: "Speak Telugu Confidently", description: "Everyday conversations, work, travel, and social situations." },
+      { title: "Telugu Reading & Writing", description: "Script, pronunciation, vocabulary, and written communication." },
+      { title: "Telugu for Academics", description: "Support for school students, syllabus prep, and exams." },
+      { title: "Telugu for Competitive Exams", description: "Structured prep for competitive and qualifying exams." },
+    ],
     testimonials: [
       {
         name: "Divya S.",

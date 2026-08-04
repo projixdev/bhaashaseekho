@@ -4,7 +4,7 @@ import CourseThumbnail from "@/components/courses/CourseThumbnail";
 // ctaHref: "/register" on the dedicated /courses page (default), or
 // "#lead-form" when rendered inside the homepage's CoursesPreview so the
 // button scrolls to the single homepage lead form instead of navigating away.
-export default function CourseCard({ course, ctaLabel = "Get in Touch", ctaHref = "/register", price }) {
+export default function CourseCard({ course, ctaLabel = "Book a Trial Class", ctaHref = "/register", price }) {
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-background">
       <Link href={`/courses/${course.slug}`} className="cursor-pointer">

@@ -1,7 +1,8 @@
 import { home } from "@/content";
 import RegisterForm from "@/components/forms/RegisterForm";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
 
-// The single lead-capture form on the homepage — every "Get in Touch" /
+// The single lead-capture form on the homepage — every "Book a Trial Class" /
 // course CTA on this page scrolls here rather than opening a separate form.
 export default function LeadCaptureSection() {
   return (
@@ -14,6 +15,11 @@ export default function LeadCaptureSection() {
 
         <div className="mt-8 rounded-xl border border-border bg-background p-6 shadow-sm">
           <RegisterForm />
+        </div>
+
+        <div className="mt-6 flex flex-col items-center gap-3 text-center">
+          <WhatsAppButton variant="inline" />
+          <p className="text-sm text-white/70">{home.leadForm.helperText}</p>
         </div>
       </div>
     </section>
