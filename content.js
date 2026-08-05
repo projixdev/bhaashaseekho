@@ -58,6 +58,15 @@ export const seo = {
     description:
       "Read the Bhaasha Seekho refund and cancellation policy to understand how trial classes, class packages, and rescheduling are handled.",
   },
+  termsOfService: {
+    title: "Terms of Service",
+    description:
+      "Read the Bhaasha Seekho terms of service covering use of our website, live online classes, and your rights and responsibilities as a learner.",
+  },
+  blog: {
+    title: "Blog",
+    description: "Language-learning tips, culture notes, and updates from Bhaasha Seekho — coming soon.",
+  },
   notFound: {
     title: "Page Not Found",
     description:
@@ -372,12 +381,19 @@ export const registerPage = {
 };
 
 export const footer = {
+  // Mirrors home.trustStats (4.9/5 average, 500+ students) — same
+  // real, verifiable numbers, just condensed into one line for the footer.
+  trustStat: "4.9★ · 500+ students",
   columns: [
     {
-      heading: "Bhaasha Seekho",
+      heading: "Company",
       links: [
         { label: "About Us", href: "/about" },
         { label: "Reviews", href: "/#reviews" },
+        // No tutor-application flow exists yet — routes to Contact, where
+        // they can message us directly, rather than a dedicated page.
+        { label: "Become a Tutor", href: "/contact" },
+        { label: "Blog", href: "/blog" },
         { label: "Contact", href: "/contact" },
       ],
     },
@@ -387,34 +403,44 @@ export const footer = {
         { label: "Kannada", href: "/courses/kannada" },
         { label: "Hindi", href: "/courses/hindi" },
         { label: "Telugu", href: "/courses/telugu" },
+        { label: "View All Languages →", href: "/courses" },
       ],
     },
-    {
-      heading: "Courses",
-      links: [
-        { label: "Spoken Language", href: "/courses" },
-        { label: "Reading & Writing", href: "/courses" },
-        { label: "Academic Support", href: "/courses" },
-        { label: "Exam Preparation", href: "/courses" },
-      ],
-    },
+
     {
       heading: "Support",
       links: [
         { label: "FAQs", href: "/#faq" },
         { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Refund & Cancellation Policy", href: "/refund-policy" },
+        { label: "Terms of Service", href: "/terms-of-service" },
       ],
     },
   ],
-  contactHeading: "Contact",
+  // Trust-bar badges, kept to claims the site can actually back up today:
+  // trial classes are genuinely free (see refundPolicy below), and
+  // "Experienced Tutors" already appears as a real claim elsewhere
+  // (home.hero.trustBadges, home.valueProps) — unlike "Secure Payments"
+  // (no payment/checkout flow exists on this site, it's lead-gen only) or
+  // "Certified Tutors" (no certification body is referenced anywhere),
+  // which would be unverifiable claims the rest of this file deliberately
+  // avoids (see the "no fabricated numbers" notes elsewhere in content.js).
+  trustBadges: [
+    { label: "Free Trial Class" },
+    { label: "Experienced Tutors" },
+  ],
+  // No longer shown as visible text — email/phone are reachable via the
+  // Gmail and WhatsApp icons below (mailto:/wa.me links), not duplicated
+  // here as a separate text line. Still used to build those hrefs.
   contact: {
     email: "bhaashaseekho@gmail.com",
     phone: "+91 81056 79418",
   },
-  // WhatsApp and Gmail are derived in Footer.jsx from the phone/email above
-  // (and the shared WhatsApp link builder), so only Instagram needs a real
-  // URL here — swap it in once the account exists.
+  // WhatsApp and Gmail are derived in Footer.jsx (wa.me link builder /
+  // mailto: from contact.email above) since both depend on data that
+  // already lives elsewhere. YouTube and Facebook dropped — no real URLs
+  // for them exist yet, and a placeholder link with nowhere to go isn't
+  // worth a slot in the row.
   socialLinks: [{ label: "Instagram", href: "https://www.instagram.com/bhaashaseekho/" }],
   copyright: `© ${new Date().getFullYear()} Bhaasha Seekho. All rights reserved.`,
 };
@@ -507,4 +533,70 @@ export const refundPolicy = {
       body: ["bhaashaseekho@gmail.com"],
     },
   ],
+};
+
+// Placeholder policy, same convention as privacyPolicy/refundPolicy above —
+// generic, conservative terms for now. Swap for the client's real terms
+// once legal review is done.
+export const termsOfService = {
+  heading: "Terms of Service",
+  lastUpdatedLabel: "Last updated: August 2, 2026",
+  sections: [
+    {
+      heading: "Acceptance of Terms",
+      body: [
+        "By using this website or booking a class through Bhaasha Seekho, you agree to these terms. If you don't agree, please don't use the site or our services.",
+      ],
+    },
+    {
+      heading: "Our Services",
+      body: [
+        "Bhaasha Seekho connects learners with tutors for live online Kannada, Hindi, and Telugu classes. Class formats, schedules, and pricing are as described on this site or as agreed with you directly.",
+      ],
+    },
+    {
+      heading: "Your Responsibilities",
+      body: [
+        "You agree to provide accurate contact information, attend scheduled classes in good faith, and treat tutors respectfully. Repeated no-shows or misuse of the service may result in classes being paused or cancelled.",
+      ],
+    },
+    {
+      heading: "Payments & Cancellations",
+      body: [
+        "Pricing and payment terms for class packages are shared with you before you commit to one. See our Refund & Cancellation Policy for how cancellations and rescheduling are handled.",
+      ],
+    },
+    {
+      heading: "Intellectual Property",
+      body: [
+        "Course materials, curriculum, and content shared by Bhaasha Seekho or your tutor are for your personal learning use and may not be redistributed or resold without permission.",
+      ],
+    },
+    {
+      heading: "Limitation of Liability",
+      body: [
+        "We aim to provide reliable, high-quality classes, but we don't guarantee specific learning outcomes. Bhaasha Seekho isn't liable for indirect or incidental issues arising from use of the service.",
+      ],
+    },
+    {
+      heading: "Changes to These Terms",
+      body: [
+        "We may update these terms from time to time. Continued use of the site or our services after changes means you accept the updated terms.",
+      ],
+    },
+    {
+      heading: "Contact Us",
+      body: ["bhaashaseekho@gmail.com"],
+    },
+  ],
+};
+
+// The blog doesn't exist yet — this is a real, minimal "coming soon" page
+// (not a 404) so the footer link isn't dead. Swap for real posts + listing
+// once there's content to publish.
+export const blog = {
+  heading: "Blog",
+  message: "We're working on language-learning tips, culture notes, and updates from Bhaasha Seekho. Check back soon.",
+  ctaLabel: "Explore Our Courses",
+  ctaHref: "/courses",
 };
