@@ -1,10 +1,5 @@
 import { contactPage } from "@/content";
-
-function buildWhatsAppUrl() {
-  const number = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "";
-  const text = encodeURIComponent(contactPage.whatsapp.prefilledMessage);
-  return `https://wa.me/${number}?text=${text}`;
-}
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 const WhatsAppIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">

@@ -12,7 +12,7 @@
 
 export const siteMeta = {
   name: "Bhaasha Seekho",
-  tagline: "Learn a new language, on your schedule",
+  tagline: "Learn Languages | Connect Cultures",
   description: "Personalized live online language classes with experienced tutors.",
   // Canonical production URL — deliberately hardcoded (not env-driven) so
   // metadata/sitemap/robots can never leak a preview or .vercel.app domain.
@@ -295,10 +295,9 @@ export const about = {
     "Our approach centers on speaking from day one, building on what you already know rather than starting from a textbook.",
   ],
   founder: {
-    name: "[Founder Name]",
-    role: "[Founder Title / Role]",
-    bio: "[Founder bio — background, teaching philosophy, why this business exists.]",
-    imageLabel: "[Founder Photo]",
+    name: "Sudarshan",
+    role: "CEO & Founder",
+    bio: "A Kannada and Telugu language educator with 16 years of experience, holding a Master's and Ph.D. in Kannada. Taught at Acharya University from 2016 to 2021 across levels from evening PU to postgraduate, and has coached learners for competitive exams like KPTCL and KAS as well as school academics from class 1 to 12. Recipient of the Best Language Professor Award, with a teaching philosophy built around engaging, personalized, and interactive online sessions.",
   },
 };
 
@@ -413,8 +412,10 @@ export const footer = {
     email: "bhaashaseekho@gmail.com",
     phone: "+91 81056 79418",
   },
-  // No social accounts live yet — add entries here once they exist.
-  socialLinks: [],
+  // WhatsApp and Gmail are derived in Footer.jsx from the phone/email above
+  // (and the shared WhatsApp link builder), so only Instagram needs a real
+  // URL here — swap it in once the account exists.
+  socialLinks: [{ label: "Instagram", href: "https://www.instagram.com/bhaashaseekho/" }],
   copyright: `© ${new Date().getFullYear()} Bhaasha Seekho. All rights reserved.`,
 };
 

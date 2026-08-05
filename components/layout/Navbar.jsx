@@ -13,14 +13,19 @@ export default function Navbar() {
     <header className="sticky top-0 z-30 border-b border-border bg-background">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
         {/*
-          Square lockup (icon + wordmark + tagline stacked, 1254x1254) — sized
-          up from the old horizontal SVG's 40px so the mark reads clearly
-          instead of shrinking to an illegible dot. next/image (not a plain
-          <img>) since this is a 1.2MB raster PNG that needs real
-          optimization/resizing, unlike the old 4KB SVG.
+          Icon-only mark (820x820, recropped so the glyph is centered in
+          the canvas — the original export had asymmetric padding, ~162px
+          top vs ~244px bottom, which threw off vertical centering here no
+          matter what the flex alignment was). Name + tagline are set as
+          real text alongside it since the logo file itself doesn't carry
+          them.
         */}
-        <Link href="/" className="flex shrink-0 items-center">
-          <Image src="/image.png" alt={siteMeta.name} width={64} height={64} priority className="h-16 w-16" />
+        <Link href="/" className="flex shrink-0 items-center gap-3">
+          <Image src="/logo.png" alt={`${siteMeta.name} logo`} width={64} height={64} priority className="h-16 w-16" />
+          <span className="flex flex-col leading-tight">
+            <span className="font-heading text-lg font-bold text-foreground">{siteMeta.name}</span>
+            <span className="text-xs text-secondary">{siteMeta.tagline}</span>
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex">
