@@ -24,7 +24,7 @@ export default function Testimonials() {
                     )
                   )}
                 </div>
-                <p className="mt-3 text-secondary">&ldquo;{item.quote}&rdquo;</p>
+                <p className="mt-3 text-sm text-secondary">&ldquo;{item.quote}&rdquo;</p>
                 <footer className="mt-4 flex items-center gap-3">
                   <Avatar name={item.name} index={index} />
                   <span className="text-sm font-semibold text-foreground">{item.name}</span>

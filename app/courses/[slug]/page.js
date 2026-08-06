@@ -34,7 +34,7 @@ export function generateMetadata({ params }) {
 
 function FormatItem({ icon: Icon, label, value, themeColor }) {
   return (
-    <div className="flex flex-col items-center gap-2 rounded-lg border border-border bg-background p-3 text-center">
+    <div className="flex flex-col items-center gap-2 rounded-lg border border-border bg-background p-6 text-center">
       <span
         className="flex h-11 w-11 items-center justify-center rounded-full"
         style={{ backgroundColor: `${themeColor}1a` }}
@@ -76,14 +76,14 @@ export default function CourseDetailPage({ params }) {
 
       <CourseHero course={course} />
 
-      <section className="bg-background py-8">
+      <section className="bg-background py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             Who This Course Is For
           </h2>
           <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
             {course.whoIsThisFor.map((point) => (
-              <div key={point} className="flex items-start gap-3 rounded-lg border border-border bg-background p-3">
+              <div key={point} className="flex items-start gap-3 rounded-lg border border-border bg-background p-6">
                 <span
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
                   style={{ backgroundColor: `${course.themeColor}1a` }}
@@ -97,14 +97,14 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-muted py-8">
+      <section className="bg-muted py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             What Would You Like to Achieve in {course.name}?
           </h2>
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {course.goals.map((goal) => (
-              <div key={goal.title} className="rounded-lg border border-border bg-background p-5">
+              <div key={goal.title} className="rounded-lg border border-border bg-background p-6">
                 <p className="font-heading font-semibold text-foreground">{goal.title}</p>
                 <p className="mt-2 text-sm text-secondary">{goal.description}</p>
               </div>
@@ -113,7 +113,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-background py-8">
+      <section className="bg-background py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             Your Learning Journey
@@ -127,12 +127,12 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-muted py-8">
+      <section className="bg-muted py-16 sm:py-20">
         <div className="mx-auto max-w-5xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             What You&rsquo;ll Learn
           </h2>
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {course.modules.map((module, index) => (
               <ModuleCard key={module.title} module={module} index={index} themeColor={course.themeColor} />
             ))}
@@ -140,10 +140,10 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-background py-8">
+      <section className="bg-background py-16 sm:py-20">
         <div className="mx-auto max-w-4xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">Course Format</h2>
-          <div className="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
             <FormatItem icon={IconVideo} label="Mode" value={course.format.mode} themeColor={course.themeColor} />
             <FormatItem icon={IconClock} label="Duration" value={course.format.duration} themeColor={course.themeColor} />
             <FormatItem icon={IconRepeat} label="Frequency" value={course.format.frequency} themeColor={course.themeColor} />
@@ -153,7 +153,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-muted py-8">
+      <section className="bg-muted py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             Meet Your Tutor
@@ -164,9 +164,9 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-background py-8">
+      <section className="bg-background py-16 sm:py-20">
         <div className="mx-auto max-w-md px-6 text-center">
-          <div className="rounded-xl border border-border bg-background p-8 shadow-sm">
+          <div className="rounded-xl border border-border bg-background p-6 shadow-sm">
             <p className="text-sm font-medium uppercase tracking-wide text-secondary">Starting at</p>
             <p className="mt-2 font-heading text-4xl font-bold text-foreground">{course.pricing.startingAt}</p>
             <p className="mt-2 text-sm text-secondary">{course.pricing.note}</p>
@@ -181,7 +181,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-muted py-8">
+      <section className="bg-muted py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             What Learners Say
@@ -194,7 +194,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="bg-background py-8">
+      <section className="bg-background py-16 sm:py-20">
         <div className="mx-auto max-w-3xl px-6">
           <h2 className="text-center font-heading text-2xl font-bold text-foreground sm:text-3xl">
             Frequently Asked Questions
@@ -205,7 +205,7 @@ export default function CourseDetailPage({ params }) {
         </div>
       </section>
 
-      <section className="py-16 text-center" style={{ backgroundColor: course.themeColor }}>
+      <section className="py-20 text-center sm:py-24" style={{ backgroundColor: course.themeColor }}>
         <div className="mx-auto max-w-lg px-6">
           <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
             Ready to Start Learning {course.name}?
@@ -213,7 +213,7 @@ export default function CourseDetailPage({ params }) {
           <p className="mt-2 text-white/80">Book a trial class and we&rsquo;ll help you get started.</p>
           <Link
             href="/register"
-            className="mt-6 inline-block cursor-pointer rounded-md bg-white px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90"
+            className="mt-6 inline-block cursor-pointer rounded-md bg-white px-6 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
             style={{ color: course.themeColor }}
           >
             Book a Trial Class

@@ -23,8 +23,8 @@ export default function AboutPage() {
         ))}
       </div>
 
-      <h2 className="mt-12 font-heading text-2xl font-bold text-foreground">Meet the Founder</h2>
-      <div className="mt-6">
+      <h2 className="mt-10 font-heading text-2xl font-bold text-foreground sm:text-3xl">Meet the Founder</h2>
+      <div className="mt-8">
         <FounderCard />
       </div>
     </div>

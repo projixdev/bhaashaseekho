@@ -53,7 +53,7 @@ export default function JourneyTimeline({ journey, themeColor }) {
 
       <div className="flex flex-col gap-3 md:hidden">
         {PHASES.map(({ key, label, Icon }) => (
-          <details key={key} className="group rounded-lg border border-border bg-background p-4">
+          <details key={key} className="group rounded-lg border border-border bg-background p-6">
             <summary className="flex cursor-pointer list-none items-center justify-between">
               <span className="flex items-center gap-2">
                 <Icon size={20} stroke={1.75} style={{ color: themeColor }} />

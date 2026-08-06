@@ -130,7 +130,7 @@ export default function RegisterForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="cursor-pointer rounded-md bg-accent px-5 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        className="cursor-pointer rounded-md bg-accent px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {status === "submitting" ? "Sending…" : submitLabel}
       </button>

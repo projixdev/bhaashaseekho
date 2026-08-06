@@ -65,7 +65,7 @@ export default function Navbar() {
           )}
           <Link
             href={nav.ctaHref}
-            className="cursor-pointer rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
+            className="cursor-pointer rounded-md bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
           >
             {nav.ctaLabel}
           </Link>
@@ -114,7 +114,7 @@ export default function Navbar() {
           <Link
             href={nav.ctaHref}
             onClick={() => setIsOpen(false)}
-            className="mt-1 cursor-pointer rounded-md bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white"
+            className="mt-1 cursor-pointer rounded-md bg-accent px-6 py-3 text-center text-sm font-semibold text-white"
           >
             {nav.ctaLabel}
           </Link>

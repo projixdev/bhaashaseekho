@@ -1,6 +1,6 @@
 export default function ModuleCard({ module, index, themeColor }) {
   return (
-    <div className="rounded-lg border border-border bg-background p-3">
+    <div className="rounded-lg border border-border bg-background p-6">
       <span
         className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white"
         style={{ backgroundColor: themeColor }}

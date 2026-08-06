@@ -9,7 +9,7 @@ export default function HowItWorksSteps() {
           {home.howItWorks.heading}
         </h2>
 
-        <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
           {home.howItWorks.steps.map((step) => (
             <div key={step.step} className="text-center">
               <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-semibold text-white">

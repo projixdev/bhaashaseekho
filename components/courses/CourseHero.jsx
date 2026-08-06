@@ -6,9 +6,12 @@ export default function CourseHero({ course }) {
 
   return (
     <section
-      className="relative overflow-hidden px-6 py-20 text-center sm:py-28"
+      className="relative overflow-hidden px-6 py-20 text-center sm:py-24"
       style={{ backgroundColor: course.themeColor }}
     >
+      {/* text-[14rem]/text-[18rem]: intentionally beyond Tailwind's largest
+          default step (text-9xl / 8rem) — this glyph is a full-bleed
+          background watermark, not body-scale text. */}
       <span
         aria-hidden="true"
         className={`pointer-events-none absolute inset-0 flex select-none items-center justify-center text-[14rem] leading-none text-white opacity-10 sm:text-[18rem] ${scriptFontClassName}`}

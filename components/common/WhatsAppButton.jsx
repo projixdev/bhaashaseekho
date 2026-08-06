@@ -18,7 +18,7 @@ export default function WhatsAppButton({ variant = "floating" }) {
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#25D366] px-5 py-3 text-base font-semibold text-white transition-opacity hover:opacity-90"
+        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
       >
         <WhatsAppIcon />
         {contactPage.whatsapp.ctaLabel}
