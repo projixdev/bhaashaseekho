@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { contactPage } from "@/content";
+import { apiUrl } from "@/lib/api";
 import FormField from "@/components/forms/FormField";
 
 const { fields, submitLabel, successMessage, errorMessage } = contactPage.form;
@@ -22,7 +23,7 @@ export default function ContactForm() {
     setErrors({});
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(apiUrl("/api/contact"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),

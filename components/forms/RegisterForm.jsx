@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { registerPage } from "@/content";
 import { getStoredUtmParams } from "@/lib/utm";
+import { apiUrl } from "@/lib/api";
 import FormField from "@/components/forms/FormField";
 
 const { fields, interestOptions, submitLabel, successMessage, errorMessage } = registerPage.form;
@@ -40,7 +41,7 @@ export default function RegisterForm() {
     const utm = getStoredUtmParams();
 
     try {
-      const response = await fetch("/api/leads", {
+      const response = await fetch(apiUrl("/api/leads"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values, ...utm }),
