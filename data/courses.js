@@ -12,6 +12,8 @@ export const courses = [
     name: "Kannada",
     nativeScript: "ಕನ್ನಡ",
     tagline: "12-week tutor-led course for real spoken fluency",
+    metaDescription:
+      "Learn Kannada online in this 12-week, tutor-led 1-on-1 course. Build speaking, script, and grammar skills with a native Kannada tutor via live Zoom classes.",
     themeColor: "#4f46e5",
     trustBadge: "Live, tutor-led sessions",
     whoIsThisFor: [
@@ -160,6 +162,8 @@ export const courses = [
     name: "Hindi",
     nativeScript: "हिन्दी",
     tagline: "10-week course to speak Hindi naturally, from day one",
+    metaDescription:
+      "Learn Hindi online in this 10-week, tutor-led group course. Build speaking, script, and grammar skills through live, conversation-first Google Meet classes.",
     themeColor: "#2563eb",
     trustBadge: "Small-group, tutor-led classes",
     whoIsThisFor: [
@@ -304,6 +308,8 @@ export const courses = [
     name: "Telugu",
     nativeScript: "తెలుగు",
     tagline: "12-week tutor-led course for confident spoken Telugu",
+    metaDescription:
+      "Learn Telugu online in this 12-week, tutor-led 1-on-1 course. Build speaking, script, and grammar skills with a native Telugu tutor via live Zoom classes.",
     themeColor: "#7c3aed",
     trustBadge: "Live, tutor-led sessions",
     whoIsThisFor: [

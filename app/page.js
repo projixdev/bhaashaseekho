@@ -11,7 +11,7 @@ import AudienceSection from "@/components/home/AudienceSection";
 import FAQSection from "@/components/home/FAQSection";
 import LeadCaptureSection from "@/components/home/LeadCaptureSection";
 import JsonLd from "@/components/seo/JsonLd";
-import { siteMeta, seo } from "@/content";
+import { siteMeta, seo, footer } from "@/content";
 import { buildMetadata, SITE_URL } from "@/lib/seo";
 
 export const metadata = buildMetadata({
@@ -27,6 +27,8 @@ const organizationSchema = {
   name: siteMeta.name,
   description: siteMeta.description,
   url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
+  sameAs: footer.socialLinks.map((link) => link.href),
 };
 
 export default function HomePage() {

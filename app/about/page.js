@@ -7,6 +7,7 @@ export const metadata = buildMetadata({
   title: seo.about.title,
   description: seo.about.description,
   path: "/about",
+  absoluteTitle: true,
 });
 
 const breadcrumbs = breadcrumbSchema([{ name: "About Us", path: "/about" }]);

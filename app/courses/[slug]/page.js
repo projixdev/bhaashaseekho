@@ -26,8 +26,8 @@ export function generateMetadata({ params }) {
   if (!course) return {};
 
   return buildMetadata({
-    title: `Learn ${course.name} Online`,
-    description: `${course.tagline}. Live, tutor-led ${course.format.batchType} classes with real conversation practice.`,
+    title: `Learn ${course.name} Online – Live Classes`,
+    description: course.metaDescription,
     path: `/courses/${course.slug}`,
   });
 }

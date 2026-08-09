@@ -8,6 +8,7 @@ export const metadata = buildMetadata({
   title: seo.courses.title,
   description: seo.courses.description,
   path: "/courses",
+  absoluteTitle: true,
 });
 
 const breadcrumbs = breadcrumbSchema([{ name: "Courses", path: "/courses" }]);

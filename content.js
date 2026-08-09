@@ -24,19 +24,23 @@ export const siteMeta = {
 // descriptions are sized to Google's ~150-160 char snippet window.
 export const seo = {
   home: {
-    title: "Bhaasha Seekho – Live Online Language Classes",
+    // Absolute titles/descriptions below (home, about, courses, register)
+    // are exact strings the client specified — rendered as-is via
+    // buildMetadata's absoluteTitle, not passed through the root layout's
+    // "%s | Bhaasha Seekho" template.
+    title: "Bhaasha Seekho – Live Online Language Learning Classes",
     description:
-      "Learn Kannada, Hindi, or Telugu with live 1-on-1 and group online classes. Personalized lessons with experienced tutors, on a schedule that fits you best.",
+      "Learn Kannada, Hindi, or Telugu with live online classes led by experienced tutors. Flexible 1-on-1 and group sessions, personalized to your goals and schedule.",
   },
   about: {
-    title: "About Us",
+    title: "About Bhaasha Seekho – Live Online Language Courses",
     description:
-      "Meet the team behind Bhaasha Seekho. We're on a mission to make learning Kannada, Hindi, and Telugu feel personal, conversational, and built around you.",
+      "Meet the team behind Bhaasha Seekho, an online language school teaching live Kannada, Hindi, and Telugu classes built around real conversation and your goals.",
   },
   courses: {
-    title: "Language Courses",
+    title: "All Language Courses – Bhaasha Seekho",
     description:
-      "Explore live, tutor-led Kannada, Hindi, and Telugu courses at Bhaasha Seekho. Flexible scheduling and personalized lessons for real conversational fluency.",
+      "Browse all live, tutor-led language courses at Bhaasha Seekho — Kannada, Hindi, and Telugu classes with flexible scheduling for real conversational fluency.",
   },
   contact: {
     title: "Contact Us",
@@ -44,9 +48,9 @@ export const seo = {
       "Get in touch with Bhaasha Seekho on WhatsApp, email, or phone. We're happy to answer questions about our live online Kannada, Hindi, and Telugu classes.",
   },
   register: {
-    title: "Get Started",
+    title: "Register for Bhaasha Seekho – Start Learning Today",
     description:
-      "Start your language learning journey with Bhaasha Seekho. Tell us your goals and we'll match you with a tutor for live Kannada, Hindi, or Telugu classes.",
+      "Register for a free trial class with Bhaasha Seekho and start learning Kannada, Hindi, or Telugu with an experienced tutor matched to your goals and schedule.",
   },
   privacyPolicy: {
     title: "Privacy Policy",
