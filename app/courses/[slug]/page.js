@@ -8,7 +8,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import CourseHero from "@/components/courses/CourseHero";
 import JourneyTimeline from "@/components/courses/JourneyTimeline";
 import ModuleCard from "@/components/courses/ModuleCard";
-import TutorCard from "@/components/courses/TutorCard";
+import TutorCard from "@/components/common/TutorCard";
 import TestimonialCard from "@/components/courses/TestimonialCard";
 import FAQAccordion from "@/components/courses/FAQAccordion";
 

@@ -1,5 +1,6 @@
 import { about, seo } from "@/content";
 import FounderCard from "@/components/about/FounderCard";
+import TutorCard from "@/components/common/TutorCard";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildMetadata, breadcrumbSchema } from "@/lib/seo";
 
@@ -27,6 +28,13 @@ export default function AboutPage() {
       <h2 className="mt-10 font-heading text-2xl font-bold text-foreground sm:text-3xl">Meet the Founder</h2>
       <div className="mt-8">
         <FounderCard />
+      </div>
+
+      <h2 className="mt-14 font-heading text-2xl font-bold text-foreground sm:text-3xl">Meet Our Tutors</h2>
+      <div className="mt-8 flex flex-col gap-6">
+        {about.tutors.map((tutor) => (
+          <TutorCard key={tutor.name} tutor={tutor} />
+        ))}
       </div>
     </div>
   );

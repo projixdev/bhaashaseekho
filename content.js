@@ -14,6 +14,7 @@ export const siteMeta = {
   name: "Bhaasha Seekho",
   tagline: "Learn Languages | Connect Cultures",
   description: "Personalized live online language classes with experienced tutors.",
+  logoUrl: "https://res.cloudinary.com/p4uypdeo/image/upload/v1786541401/logo.png",
   // Canonical production URL — deliberately hardcoded (not env-driven) so
   // metadata/sitemap/robots can never leak a preview or .vercel.app domain.
   url: "https://www.bhaashaseekho.com",
@@ -310,8 +311,35 @@ export const about = {
   founder: {
     name: "Sudarshan",
     role: "CEO & Founder",
+    photoUrl: "https://res.cloudinary.com/p4uypdeo/image/upload/v1786619899/founder.png",
     bio: "A Kannada and Telugu language educator with 16 years of experience, holding a Master's and Ph.D. in Kannada. Taught at Acharya University from 2016 to 2021 across levels from evening PU to postgraduate, and has coached learners for competitive exams like KPTCL and KAS as well as school academics from class 1 to 12. Recipient of the Best Language Professor Award, with a teaching philosophy built around engaging, personalized, and interactive online sessions.",
   },
+  tutors: [
+    {
+      name: "Harshitha M",
+      role: "Teaching Professional",
+      photoUrl: "https://res.cloudinary.com/p4uypdeo/image/upload/v1786619851/harshitha.png",
+      bio: "Dedicated teaching professional with 3 years of experience, proficient in teaching Accounting, Kannada, Social Science, and Tally. Skilled in explaining concepts clearly and creating a positive learning environment.",
+      credentials: ["3 years experience", "Accounting", "Kannada", "Social Science", "Tally"],
+    },
+    {
+      name: "Suvarna B. Mane",
+      role: "Teaching Professional",
+      photoUrl: "https://res.cloudinary.com/p4uypdeo/image/upload/v1786619887/suvarana.png",
+      bio: "Dedicated teaching professional with 5 years of experience, proficient in teaching Accounting, Kannada Grammar, Academic and Competitive Kannada, SAP FICO, Social Science, and Tally (ERP9 & Prime). Skilled in explaining concepts clearly and creating a positive learning environment.",
+      credentials: [
+        "5 years experience",
+        "Accounting",
+        "Kannada Grammar",
+        "Academic Kannada",
+        "Competitive Kannada",
+        "SAP FICO",
+        "Social Science",
+        "Tally ERP9",
+        "Tally Prime",
+      ],
+    },
+  ],
 };
 
 export const courses = [

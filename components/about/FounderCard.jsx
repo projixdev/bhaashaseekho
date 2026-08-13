@@ -14,7 +14,7 @@ export default function FounderCard() {
             a ~128px source and upscale it into a 200-300px box, which is
             what was making the photo look blurry/soft. */}
         <Image
-          src="/image.png"
+          src={about.founder.photoUrl || "/image.png"}
           alt={about.founder.name}
           fill
           sizes="(min-width: 640px) 200px, calc(100vw - 96px)"

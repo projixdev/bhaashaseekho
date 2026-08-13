@@ -21,7 +21,7 @@ export default function Navbar() {
           them.
         */}
         <Link href="/" className="flex shrink-0 items-center gap-3">
-          <Image src="/logo.png" alt={`${siteMeta.name} logo`} width={64} height={64} priority className="h-16 w-16" />
+          <Image src={siteMeta.logoUrl} alt={`${siteMeta.name} logo`} width={64} height={64} priority className="h-16 w-16" />
           <span className="flex flex-col leading-tight">
             <span className="font-heading text-lg font-bold text-foreground">{siteMeta.name}</span>
             <span className="text-xs text-secondary">{siteMeta.tagline}</span>
