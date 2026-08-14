@@ -20,7 +20,10 @@ export default function AdminLoginPage() {
     try {
       const result = await adminLogin(email, password);
       setAdminToken(result.token);
-      router.replace("/admin/dashboard");
+      // Overview is the default landing page for the admin section now —
+      // the old all-in-one dashboard stays reachable directly by URL only,
+      // until Students/Feedback pages replace what it still covers.
+      router.replace("/admin/overview");
     } catch (err) {
       setError(err.message || "Could not log in.");
     } finally {

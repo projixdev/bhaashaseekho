@@ -4,9 +4,7 @@ import { siteMeta, seo } from "@/content";
 import { SITE_URL, OG_IMAGE } from "@/lib/seo";
 import { GTMHeadScript, GTMNoScript } from "@/components/layout/GTMScripts";
 import UtmCapture from "@/components/UtmCapture";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import WhatsAppButton from "@/components/common/WhatsAppButton";
+import SiteChrome from "@/components/layout/SiteChrome";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -51,10 +49,7 @@ export default function RootLayout({ children }) {
       <body className={`${poppins.variable} ${openSans.variable} font-sans antialiased`}>
         <GTMNoScript />
         <UtmCapture />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <WhatsAppButton variant="floating" />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

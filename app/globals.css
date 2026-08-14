@@ -20,6 +20,39 @@
   --color-ring: #4f46e5;
 }
 
+/* Admin dashboard theme — scoped to [data-theme="admin"] (applied in
+   app/admin/(app)/layout.js) so it never touches the marketing site's
+   indigo brand above. Picked via the ui-ux-pro-max skill: "Data-Dense
+   Dashboard" style + "SaaS (General)" color palette + "Minimal Swiss"
+   (Inter) typography — chosen deliberately over the skill's first
+   `--design-system` pass, which returned a landing-page pattern; see the
+   Teachers-page report for the full reasoning trail.
+   card/success/*-soft are new roles beyond the marketing site's token set
+   (extended in tailwind.config.js) — the marketing palette has no
+   "card-on-background" or semantic success concept to reuse. Soft tints are
+   explicit tokens, not opacity modifiers on the base color, matching the
+   existing --color-accent-soft precedent above (Tailwind's opacity-modifier
+   support for CSS-custom-property colors isn't guaranteed in this Tailwind
+   version, so this codebase already avoids relying on it). */
+[data-theme="admin"] {
+  --color-background: #f8fafc;
+  --color-foreground: #1e293b;
+  --color-primary: #2563eb;
+  --color-on-primary: #ffffff;
+  --color-secondary: #64748b;
+  --color-accent: #ea580c;
+  --color-accent-soft: #ffedd5;
+  --color-muted: #e9eff8;
+  --color-border: #e2e8f0;
+  --color-destructive: #dc2626;
+  --color-destructive-soft: #fee2e2;
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-ring: #2563eb;
+  --color-card: #ffffff;
+  --color-card-foreground: #1e293b;
+}
+
 body {
   color: var(--color-foreground);
   background: var(--color-background);

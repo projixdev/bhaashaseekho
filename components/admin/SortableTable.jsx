@@ -5,9 +5,12 @@ import { useMemo, useState } from "react";
 // Generic sortable table shared by the teachers/students/feedback tables on
 // the admin dashboard — each column is { key, label, render? }; render is
 // optional and receives the full row, key alone drives both the default
-// cell value and the sort comparison.
-export default function SortableTable({ columns, rows, rowKey = "_id", emptyMessage = "Nothing here yet." }) {
-  const [sort, setSort] = useState({ key: columns[0]?.key, dir: "asc" });
+// cell value and the sort comparison. defaultSort is optional ({key, dir})
+// for pages that need a specific initial order (e.g. Feedback's "newest
+// first") — omitting it keeps the original first-column-ascending default,
+// so existing callers (Teachers) are unaffected.
+export default function SortableTable({ columns, rows, rowKey = "_id", emptyMessage = "Nothing here yet.", defaultSort }) {
+  const [sort, setSort] = useState(defaultSort ?? { key: columns[0]?.key, dir: "asc" });
 
   const sorted = useMemo(() => {
     const copy = [...rows];
