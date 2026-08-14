@@ -26,6 +26,9 @@ module.exports = {
         "destructive-soft": "var(--color-destructive-soft)",
         success: "var(--color-success)",
         "success-soft": "var(--color-success-soft)",
+        info: "var(--color-info)",
+        "info-soft": "var(--color-info-soft)",
+        warning: "var(--color-warning)",
       },
       fontFamily: {
         heading: ["var(--font-heading)", "sans-serif"],

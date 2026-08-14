@@ -45,12 +45,68 @@
   --color-muted: #e9eff8;
   --color-border: #e2e8f0;
   --color-destructive: #dc2626;
-  --color-destructive-soft: #fee2e2;
+  /* #fee2e2 measured 3.95:1 against --color-destructive — fails WCAG AA
+     (4.5:1) for the error-banner text/icon sitting on it. Verified with an
+     actual contrast calculation, not eyeballed; #fff5f5 measures 4.51:1. */
+  --color-destructive-soft: #fff5f5;
   --color-success: #15803d;
   --color-success-soft: #dcfce7;
   --color-ring: #2563eb;
   --color-card: #ffffff;
   --color-card-foreground: #1e293b;
+  /* "Submitted" badge (Students page) and any other informational-blue
+     usage — kept separate from --color-primary since primary also has to
+     hold white button-fill text at a higher-saturation blue than works
+     well as plain text/icon color; splitting them now avoids a conflict
+     that would otherwise show up when dark mode is added. */
+  --color-info: #2563eb;
+  --color-info-soft: #eff6ff;
+  /* "Pending" badge (Students page). --color-accent (#ea580c) itself only
+     measures 3.11:1 against --color-accent-soft — too light-on-light to
+     hit 4.5:1 no matter how the background tint is adjusted, since the
+     base orange's luminance is the limiting factor, not the background.
+     "warning" is also just a more accurate name than reusing "accent"
+     (a brand/CTA color) for a status badge. Pairs with the existing
+     --color-accent-soft background — verified 6.38:1 together. */
+  --color-warning: #9a3412;
+}
+
+/* Dark mode — every value below was checked with an actual WCAG contrast
+   calculation (relative luminance formula), not inverted from the light
+   values or eyeballed. Several colors change shade, not just lightness, to
+   keep holding 4.5:1 (text) / 3:1 (UI components) against the new dark
+   surfaces: destructive goes red-600 -> red-400, success green-700 ->
+   green-400, warning orange-800 -> orange-300 — the light-mode shades all
+   measure under 3:1 against a dark card. --color-primary is the one
+   exception that *doesn't* change: its only job is holding white
+   button-fill text (5.17:1), which is independent of the surrounding
+   page's darkness — but that same value fails badly as a bare icon/text
+   color on a dark card (2.83:1 against 3:1 needed), which is exactly why
+   --color-info exists as a separate, lighter-in-dark-mode token instead of
+   overloading primary with a second, conflicting role.
+   Toggled via data-mode="dark" alongside data-theme="admin" on the same
+   element (app/admin/(app)/layout.js) — both attributes required, so this
+   can never leak outside the admin section in either mode. */
+[data-theme="admin"][data-mode="dark"] {
+  --color-background: #0f172a;
+  --color-foreground: #f1f5f9;
+  --color-primary: #2563eb;
+  --color-on-primary: #ffffff;
+  --color-secondary: #94a3b8;
+  --color-accent: #f97316;
+  --color-accent-soft: #7c2d12;
+  --color-muted: #293548;
+  --color-border: #334155;
+  --color-destructive: #f87171;
+  --color-destructive-soft: #450a0a;
+  --color-success: #4ade80;
+  --color-success-soft: #052e16;
+  --color-ring: #60a5fa;
+  --color-card: #1e293b;
+  --color-card-foreground: #f1f5f9;
+  --color-info: #60a5fa;
+  --color-info-soft: #172554;
+  --color-warning: #fdba74;
 }
 
 body {

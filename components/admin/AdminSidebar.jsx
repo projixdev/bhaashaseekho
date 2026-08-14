@@ -8,19 +8,56 @@ import {
   IconMessage2,
   IconLayoutDashboard,
   IconLogout,
+  IconSun,
+  IconMoon,
 } from "@tabler/icons-react";
 
-// enabled: false items are intentionally inert previews of the eventual
-// nav — no route exists for them yet (Students is the last piece of this
-// rebuild). Not links, not clickable, just a preview of where it'll land.
 const NAV_ITEMS = [
   { href: "/admin/overview", label: "Overview", icon: IconLayoutDashboard, enabled: true },
   { href: "/admin/teachers", label: "Teachers", icon: IconChalkboardTeacher, enabled: true },
-  { href: "/admin/students", label: "Students", icon: IconSchool, enabled: false },
+  { href: "/admin/students", label: "Students", icon: IconSchool, enabled: true },
   { href: "/admin/feedback", label: "Feedback", icon: IconMessage2, enabled: true },
 ];
 
-export default function AdminSidebar({ onLogout }) {
+function ThemeToggle({ theme, onToggle }) {
+  const isDark = theme === "dark";
+  return (
+    <button
+      onClick={onToggle}
+      role="switch"
+      aria-checked={isDark}
+      className="flex w-full items-center justify-between gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-secondary transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+    >
+      <span className="flex items-center gap-3">
+        {isDark ? (
+          <IconMoon size={20} stroke={1.75} aria-hidden="true" />
+        ) : (
+          <IconSun size={20} stroke={1.75} aria-hidden="true" />
+        )}
+        {isDark ? "Dark mode" : "Light mode"}
+      </span>
+      {/* motion-safe: only the pure-CSS pill/thumb slide is gated — this is
+          decorative motion (the state is already conveyed by the icon,
+          label, and aria-checked), not essential to perceiving the change,
+          so fully disabling it under prefers-reduced-motion is correct
+          rather than just shortening it. */}
+      <span
+        aria-hidden="true"
+        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full motion-safe:transition-colors motion-safe:duration-200 ${
+          isDark ? "bg-primary" : "bg-border"
+        }`}
+      >
+        <span
+          className={`inline-block h-4 w-4 translate-x-0.5 transform rounded-full bg-white shadow motion-safe:transition-transform motion-safe:duration-200 ${
+            isDark ? "translate-x-4" : "translate-x-0.5"
+          }`}
+        />
+      </span>
+    </button>
+  );
+}
+
+export default function AdminSidebar({ onLogout, theme, onToggleTheme }) {
   const pathname = usePathname();
 
   return (
@@ -68,7 +105,8 @@ export default function AdminSidebar({ onLogout }) {
         })}
       </nav>
 
-      <div className="border-t border-border p-3">
+      <div className="flex flex-col gap-1 border-t border-border p-3">
+        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         <button
           onClick={onLogout}
           className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-secondary transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"

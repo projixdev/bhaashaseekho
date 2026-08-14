@@ -1,7 +1,7 @@
 // Not linked from any public nav (see Navbar.jsx — untouched), reachable
 // only by direct URL. noindex/nofollow reinforces "not discoverable" for
 // search engines; it isn't the security boundary — requireAdmin on the
-// backend is (see lib/adminApi.js / app/admin/dashboard/page.js).
+// backend is (see lib/adminApi.js and every route under (app)/).
 export const metadata = {
   title: "Admin",
   robots: { index: false, follow: false },
