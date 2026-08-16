@@ -1,18 +1,22 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { IconPlus, IconAlertCircle, IconCircleCheck } from "@tabler/icons-react";
+import { IconPlus, IconAlertCircle, IconCircleCheck, IconPencil, IconUserOff } from "@tabler/icons-react";
 import SortableTable from "@/components/admin/SortableTable";
 import AddTeacherModal from "@/components/admin/AddTeacherModal";
-import { getAdminTeachers } from "@/lib/adminApi";
+import UserFormModal from "@/components/admin/UserFormModal";
+import ConfirmDeactivateModal from "@/components/admin/ConfirmDeactivateModal";
+import { getAdminTeachers, deleteAdminTeacher } from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
 
-const columns = [
-  { key: "name", label: "Name" },
-  { key: "email", label: "Email", render: (row) => row.email || "—" },
-  { key: "phone", label: "Phone" },
-  { key: "assignedStudentCount", label: "Students" },
-];
+function StatusBadge({ isActive }) {
+  if (isActive) return null;
+  return (
+    <span className="inline-flex items-center whitespace-nowrap rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-secondary">
+      Inactive
+    </span>
+  );
+}
 
 function TeachersTableSkeleton() {
   return (
@@ -34,7 +38,9 @@ export default function TeachersPage() {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingTeacher, setEditingTeacher] = useState(null);
+  const [deactivatingTeacher, setDeactivatingTeacher] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
   const load = useCallback(async () => {
@@ -55,12 +61,63 @@ export default function TeachersPage() {
     load();
   }, [load]);
 
-  function handleCreated(newTeacher) {
-    setShowForm(false);
-    setSuccessMessage(`${newTeacher.name} was added.`);
-    load();
+  function flashSuccess(message) {
+    setSuccessMessage(message);
     window.setTimeout(() => setSuccessMessage(null), 4000);
   }
+
+  function handleCreated(newTeacher) {
+    setShowAddForm(false);
+    flashSuccess(`${newTeacher.name} was added.`);
+    load();
+  }
+
+  function handleSaved(updatedTeacher) {
+    setEditingTeacher(null);
+    flashSuccess(`${updatedTeacher.name} was updated.`);
+    load();
+  }
+
+  function handleDeactivated() {
+    const name = deactivatingTeacher?.name;
+    setDeactivatingTeacher(null);
+    flashSuccess(`${name} was deactivated.`);
+    load();
+  }
+
+  const columns = [
+    { key: "name", label: "Name" },
+    { key: "email", label: "Email", render: (row) => row.email || "—" },
+    { key: "phone", label: "Phone" },
+    { key: "assignedStudentCount", label: "Students" },
+    { key: "isActive", label: "Status", render: (row) => <StatusBadge isActive={row.isActive} /> },
+    {
+      key: "actions",
+      label: "",
+      render: (row) => (
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setEditingTeacher(row)}
+            aria-label={`Edit ${row.name}`}
+            className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <IconPencil size={16} stroke={1.75} aria-hidden="true" />
+          </button>
+          {row.isActive ? (
+            <button
+              type="button"
+              onClick={() => setDeactivatingTeacher(row)}
+              aria-label={`Deactivate ${row.name}`}
+              className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-destructive-soft hover:text-destructive focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+            >
+              <IconUserOff size={16} stroke={1.75} aria-hidden="true" />
+            </button>
+          ) : null}
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-8 lg:px-10">
@@ -72,7 +129,7 @@ export default function TeachersPage() {
           </p>
         </div>
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => setShowAddForm(true)}
           className="inline-flex h-11 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
           <IconPlus size={18} stroke={2} aria-hidden="true" />
@@ -95,10 +152,35 @@ export default function TeachersPage() {
           {error}
         </div>
       ) : (
-        <SortableTable columns={columns} rows={teachers} emptyMessage="No teachers yet — add one to get started." />
+        <SortableTable
+          columns={columns}
+          rows={teachers}
+          emptyMessage="No teachers yet — add one to get started."
+          rowClassName={(row) => (row.isActive === false ? "opacity-60" : "")}
+        />
       )}
 
-      {showForm ? <AddTeacherModal onClose={() => setShowForm(false)} onCreated={handleCreated} /> : null}
+      {showAddForm ? <AddTeacherModal onClose={() => setShowAddForm(false)} onCreated={handleCreated} /> : null}
+
+      {editingTeacher ? (
+        <UserFormModal
+          mode="edit"
+          role="teacher"
+          user={editingTeacher}
+          onClose={() => setEditingTeacher(null)}
+          onSaved={handleSaved}
+        />
+      ) : null}
+
+      {deactivatingTeacher ? (
+        <ConfirmDeactivateModal
+          role="teacher"
+          user={deactivatingTeacher}
+          deactivateFn={deleteAdminTeacher}
+          onClose={() => setDeactivatingTeacher(null)}
+          onDeactivated={handleDeactivated}
+        />
+      ) : null}
     </div>
   );
 }

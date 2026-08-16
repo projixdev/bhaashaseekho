@@ -8,8 +8,17 @@ import { useMemo, useState } from "react";
 // cell value and the sort comparison. defaultSort is optional ({key, dir})
 // for pages that need a specific initial order (e.g. Feedback's "newest
 // first") — omitting it keeps the original first-column-ascending default,
-// so existing callers (Teachers) are unaffected.
-export default function SortableTable({ columns, rows, rowKey = "_id", emptyMessage = "Nothing here yet.", defaultSort }) {
+// so existing callers (Teachers) are unaffected. rowClassName is optional
+// too, (row) => string, for per-row styling (e.g. dimming a deactivated
+// teacher/student) — omitting it is a no-op for every existing caller.
+export default function SortableTable({
+  columns,
+  rows,
+  rowKey = "_id",
+  emptyMessage = "Nothing here yet.",
+  defaultSort,
+  rowClassName,
+}) {
   const [sort, setSort] = useState(defaultSort ?? { key: columns[0]?.key, dir: "asc" });
 
   const sorted = useMemo(() => {
@@ -56,7 +65,7 @@ export default function SortableTable({ columns, rows, rowKey = "_id", emptyMess
         </thead>
         <tbody>
           {sorted.map((row) => (
-            <tr key={row[rowKey]} className="border-t border-border">
+            <tr key={row[rowKey]} className={`border-t border-border ${rowClassName ? rowClassName(row) : ""}`}>
               {columns.map((col) => (
                 <td key={col.key} className="whitespace-nowrap px-3 py-2 text-foreground">
                   {col.render ? col.render(row) : (row[col.key] ?? "—")}

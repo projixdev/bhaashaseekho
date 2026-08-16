@@ -1,9 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { IconAlertCircle, IconClock, IconSend2, IconCircleCheck, IconMinus } from "@tabler/icons-react";
+import { useCallback, useEffect, useState } from "react";
+import {
+  IconAlertCircle,
+  IconClock,
+  IconSend2,
+  IconCircleCheck,
+  IconMinus,
+  IconPlus,
+  IconPencil,
+  IconUserOff,
+} from "@tabler/icons-react";
 import SortableTable from "@/components/admin/SortableTable";
-import { getAdminStudents } from "@/lib/adminApi";
+import UserFormModal from "@/components/admin/UserFormModal";
+import ConfirmDeactivateModal from "@/components/admin/ConfirmDeactivateModal";
+import { getAdminStudents, deleteAdminStudent } from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
 
 // Every color pair here was checked with an actual contrast calculation
@@ -42,40 +53,29 @@ function AttendanceBadge({ completed, total, unlocked }) {
   );
 }
 
+function StatusBadge({ isActive }) {
+  if (isActive) return null;
+  return (
+    <span className="inline-flex items-center whitespace-nowrap rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-secondary">
+      Inactive
+    </span>
+  );
+}
+
 function flattenStudent(s) {
   return {
     _id: s._id,
     name: s.name,
     phone: s.phone,
+    email: s.email,
     teachersLabel: s.teachers.length > 0 ? s.teachers.map((t) => `${t.courseSlug} (${t.name ?? "—"})`).join(", ") : "—",
     completedClassCount: s.completedClassCount,
     assessmentsUnlockAt: s.assessmentsUnlockAt,
     assessmentsUnlocked: s.assessmentsUnlocked,
     assignmentStatus: s.assignmentStatus,
+    isActive: s.isActive,
   };
 }
-
-const columns = [
-  { key: "name", label: "Name" },
-  { key: "phone", label: "Phone" },
-  { key: "teachersLabel", label: "Teacher(s)" },
-  {
-    key: "completedClassCount",
-    label: "Attendance",
-    render: (row) => (
-      <AttendanceBadge
-        completed={row.completedClassCount}
-        total={row.assessmentsUnlockAt}
-        unlocked={row.assessmentsUnlocked}
-      />
-    ),
-  },
-  {
-    key: "assignmentStatus",
-    label: "Assignments",
-    render: (row) => <AssignmentStatusBadge status={row.assignmentStatus} />,
-  },
-];
 
 function StudentsTableSkeleton() {
   return (
@@ -98,24 +98,126 @@ export default function StudentsPage() {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [editingStudent, setEditingStudent] = useState(null);
+  const [deactivatingStudent, setDeactivatingStudent] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
-  useEffect(() => {
+  const load = useCallback(async () => {
     const token = getAdminToken();
     if (!token) return;
-    getAdminStudents(token)
-      .then((res) => setStudents(res.students.map(flattenStudent)))
-      .catch((err) => setError(err.message || "Could not load students."))
-      .finally(() => setLoading(false));
+    setError(null);
+    try {
+      const res = await getAdminStudents(token);
+      setStudents(res.students.map(flattenStudent));
+    } catch (err) {
+      setError(err.message || "Could not load students.");
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  function flashSuccess(message) {
+    setSuccessMessage(message);
+    window.setTimeout(() => setSuccessMessage(null), 4000);
+  }
+
+  function handleCreated(newStudent) {
+    setShowAddForm(false);
+    flashSuccess(`${newStudent.name} was added.`);
+    load();
+  }
+
+  function handleSaved(updatedStudent) {
+    setEditingStudent(null);
+    flashSuccess(`${updatedStudent.name} was updated.`);
+    load();
+  }
+
+  function handleDeactivated() {
+    const name = deactivatingStudent?.name;
+    setDeactivatingStudent(null);
+    flashSuccess(`${name} was deactivated.`);
+    load();
+  }
+
+  const columns = [
+    { key: "name", label: "Name" },
+    { key: "phone", label: "Phone" },
+    { key: "teachersLabel", label: "Teacher(s)" },
+    {
+      key: "completedClassCount",
+      label: "Attendance",
+      render: (row) => (
+        <AttendanceBadge
+          completed={row.completedClassCount}
+          total={row.assessmentsUnlockAt}
+          unlocked={row.assessmentsUnlocked}
+        />
+      ),
+    },
+    {
+      key: "assignmentStatus",
+      label: "Assignments",
+      render: (row) => <AssignmentStatusBadge status={row.assignmentStatus} />,
+    },
+    { key: "isActive", label: "Status", render: (row) => <StatusBadge isActive={row.isActive} /> },
+    {
+      key: "actions",
+      label: "",
+      render: (row) => (
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setEditingStudent(row)}
+            aria-label={`Edit ${row.name}`}
+            className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <IconPencil size={16} stroke={1.75} aria-hidden="true" />
+          </button>
+          {row.isActive ? (
+            <button
+              type="button"
+              onClick={() => setDeactivatingStudent(row)}
+              aria-label={`Deactivate ${row.name}`}
+              className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-destructive-soft hover:text-destructive focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+            >
+              <IconUserOff size={16} stroke={1.75} aria-hidden="true" />
+            </button>
+          ) : null}
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-8 lg:px-10">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-foreground">Students</h1>
-        <p className="mt-1 text-sm text-secondary">
-          {loading ? "Loading…" : `${students.length} student${students.length === 1 ? "" : "s"}`}
-        </p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-foreground">Students</h1>
+          <p className="mt-1 text-sm text-secondary">
+            {loading ? "Loading…" : `${students.length} student${students.length === 1 ? "" : "s"}`}
+          </p>
+        </div>
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="inline-flex h-11 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        >
+          <IconPlus size={18} stroke={2} aria-hidden="true" />
+          Add Student
+        </button>
       </div>
+
+      {successMessage ? (
+        <div role="status" className="mb-4 flex items-center gap-2 rounded-md bg-success-soft px-4 py-3 text-sm text-success">
+          <IconCircleCheck size={18} stroke={2} aria-hidden="true" />
+          {successMessage}
+        </div>
+      ) : null}
 
       {loading ? (
         <StudentsTableSkeleton />
@@ -125,8 +227,37 @@ export default function StudentsPage() {
           {error}
         </div>
       ) : (
-        <SortableTable columns={columns} rows={students} emptyMessage="No students yet." />
+        <SortableTable
+          columns={columns}
+          rows={students}
+          emptyMessage="No students yet."
+          rowClassName={(row) => (row.isActive === false ? "opacity-60" : "")}
+        />
       )}
+
+      {showAddForm ? (
+        <UserFormModal mode="create" role="student" onClose={() => setShowAddForm(false)} onSaved={handleCreated} />
+      ) : null}
+
+      {editingStudent ? (
+        <UserFormModal
+          mode="edit"
+          role="student"
+          user={editingStudent}
+          onClose={() => setEditingStudent(null)}
+          onSaved={handleSaved}
+        />
+      ) : null}
+
+      {deactivatingStudent ? (
+        <ConfirmDeactivateModal
+          role="student"
+          user={deactivatingStudent}
+          deactivateFn={deleteAdminStudent}
+          onClose={() => setDeactivatingStudent(null)}
+          onDeactivated={handleDeactivated}
+        />
+      ) : null}
     </div>
   );
 }
