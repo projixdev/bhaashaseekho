@@ -10,10 +10,12 @@ import {
   IconPlus,
   IconPencil,
   IconUserOff,
+  IconSchool,
 } from "@tabler/icons-react";
 import SortableTable from "@/components/admin/SortableTable";
 import UserFormModal from "@/components/admin/UserFormModal";
 import ConfirmDeactivateModal from "@/components/admin/ConfirmDeactivateModal";
+import ManageEnrollmentsModal from "@/components/admin/ManageEnrollmentsModal";
 import { getAdminStudents, deleteAdminStudent } from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
 
@@ -94,6 +96,7 @@ function flattenStudent(s) {
     phone: s.phone,
     email: s.email,
     teachersLabel: s.teachers.length > 0 ? s.teachers.map((t) => `${t.courseSlug} (${t.name ?? "—"})`).join(", ") : "—",
+    teachers: s.teachers,
     completedClassCount: s.completedClassCount,
     assessmentsUnlockAt: s.assessmentsUnlockAt,
     assessmentsUnlocked: s.assessmentsUnlocked,
@@ -128,6 +131,7 @@ export default function StudentsPage() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
   const [deactivatingStudent, setDeactivatingStudent] = useState(null);
+  const [managingEnrollmentsFor, setManagingEnrollmentsFor] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
   const load = useCallback(async () => {
@@ -203,6 +207,14 @@ export default function StudentsPage() {
       label: "",
       render: (row) => (
         <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setManagingEnrollmentsFor(row)}
+            aria-label={`Manage enrollments for ${row.name}`}
+            className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+          >
+            <IconSchool size={16} stroke={1.75} aria-hidden="true" />
+          </button>
           <button
             type="button"
             onClick={() => setEditingStudent(row)}
@@ -288,6 +300,14 @@ export default function StudentsPage() {
           deactivateFn={deleteAdminStudent}
           onClose={() => setDeactivatingStudent(null)}
           onDeactivated={handleDeactivated}
+        />
+      ) : null}
+
+      {managingEnrollmentsFor ? (
+        <ManageEnrollmentsModal
+          student={managingEnrollmentsFor}
+          onClose={() => setManagingEnrollmentsFor(null)}
+          onChanged={load}
         />
       ) : null}
     </div>
