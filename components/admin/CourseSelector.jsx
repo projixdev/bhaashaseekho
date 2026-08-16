@@ -65,7 +65,7 @@ export default function CourseSelector({ rows, onChange, teachers, errors = {} }
         return (
           <div key={row.key} className="rounded-md border border-border p-3">
             <div className="flex items-start gap-2">
-              <div className="grid flex-1 grid-cols-1 gap-2 sm:grid-cols-3">
+              <div className="grid flex-1 grid-cols-2 gap-2">
                 <select
                   value={row.language}
                   onChange={(event) => updateRow(index, { language: event.target.value, courseSlug: "", tutorId: "" })}
@@ -101,7 +101,7 @@ export default function CourseSelector({ rows, onChange, teachers, errors = {} }
                   value={row.tutorId}
                   onChange={(event) => updateRow(index, { tutorId: event.target.value })}
                   disabled={!row.courseSlug}
-                  className={selectClassName(tutorError)}
+                  className={`col-span-2 ${selectClassName(tutorError)}`}
                 >
                   <option value="" disabled>
                     {row.courseSlug ? "Tutor…" : "Choose a course first"}
