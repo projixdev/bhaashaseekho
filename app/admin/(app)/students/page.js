@@ -62,6 +62,31 @@ function StatusBadge({ isActive }) {
   );
 }
 
+function daysRemaining(accessExpiresAt) {
+  const ms = new Date(accessExpiresAt).getTime() - Date.now();
+  return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
+}
+
+function AccountTypeBadge({ accountType, accessExpiresAt }) {
+  if (accountType !== "trial") {
+    return (
+      <span className="inline-flex items-center whitespace-nowrap rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground">
+        Permanent
+      </span>
+    );
+  }
+  const days = daysRemaining(accessExpiresAt);
+  return (
+    <span
+      className={`inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ${
+        days === 0 ? "bg-destructive-soft text-destructive" : "bg-accent-soft text-warning"
+      }`}
+    >
+      Trial · {days === 0 ? "expired" : `${days}d left`}
+    </span>
+  );
+}
+
 function flattenStudent(s) {
   return {
     _id: s._id,
@@ -73,6 +98,8 @@ function flattenStudent(s) {
     assessmentsUnlockAt: s.assessmentsUnlockAt,
     assessmentsUnlocked: s.assessmentsUnlocked,
     assignmentStatus: s.assignmentStatus,
+    accountType: s.accountType,
+    accessExpiresAt: s.accessExpiresAt,
     isActive: s.isActive,
   };
 }
@@ -164,6 +191,11 @@ export default function StudentsPage() {
       key: "assignmentStatus",
       label: "Assignments",
       render: (row) => <AssignmentStatusBadge status={row.assignmentStatus} />,
+    },
+    {
+      key: "accountType",
+      label: "Account",
+      render: (row) => <AccountTypeBadge accountType={row.accountType} accessExpiresAt={row.accessExpiresAt} />,
     },
     { key: "isActive", label: "Status", render: (row) => <StatusBadge isActive={row.isActive} /> },
     {

@@ -56,6 +56,11 @@ export default function UserFormModal({ mode, role, user, onClose, onSaved }) {
   const [name, setName] = useState(user?.name ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [phone, setPhone] = useState(user?.phone ?? "");
+  // Empty string, not a default of "permanent" — the admin has to actually
+  // pick one (matches the backend rejecting a missing accountType outright)
+  // rather than silently defaulting to whichever option happens to be
+  // first in the list.
+  const [accountType, setAccountType] = useState(user?.accountType ?? "");
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -82,6 +87,7 @@ export default function UserFormModal({ mode, role, user, onClose, onSaved }) {
         name: name.trim(),
         phone: phone.trim(),
         email: email.trim() || (mode === "create" ? undefined : ""),
+        ...(role === "student" ? { accountType: accountType || undefined } : {}),
       };
 
       let res;
@@ -180,6 +186,34 @@ export default function UserFormModal({ mode, role, user, onClose, onSaved }) {
               className={inputClassName(errors.phone)}
             />
           </Field>
+
+          {role === "student" ? (
+            <Field
+              label="Account type"
+              required
+              hint={
+                accountType === "trial"
+                  ? "Access expires 7 days from now"
+                  : accountType === "permanent"
+                    ? "No expiry"
+                    : "Trial: 7-day access from today. Permanent: no expiry."
+              }
+              error={errors.accountType}
+            >
+              <select
+                value={accountType}
+                onChange={(event) => setAccountType(event.target.value)}
+                required
+                className={inputClassName(errors.accountType)}
+              >
+                <option value="" disabled>
+                  Choose one…
+                </option>
+                <option value="trial">Trial (demo) — 7 days</option>
+                <option value="permanent">Permanent</option>
+              </select>
+            </Field>
+          ) : null}
 
           {errors.form ? (
             <p role="alert" className="text-sm text-destructive">
