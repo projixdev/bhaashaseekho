@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { IconX } from "@tabler/icons-react";
 import { createAdminTeacher, AdminApiError } from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
+import LanguagesField from "./LanguagesField";
 
 // The backend reports a 409 as a plain message ("This phone number is
 // already registered." / "This email is already registered to another
@@ -45,6 +46,7 @@ export default function AddTeacherModal({ onClose, onCreated }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [languages, setLanguages] = useState([]);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const dialogRef = useRef(null);
@@ -69,6 +71,7 @@ export default function AddTeacherModal({ onClose, onCreated }) {
         name: name.trim(),
         phone: phone.trim(),
         email: email.trim() || undefined,
+        languages,
       });
       onCreated(res.teacher);
     } catch (err) {
@@ -146,6 +149,8 @@ export default function AddTeacherModal({ onClose, onCreated }) {
               className={inputClassName(errors.phone)}
             />
           </Field>
+
+          <LanguagesField value={languages} onChange={setLanguages} error={errors.languages} />
 
           {errors.form ? (
             <p role="alert" className="text-sm text-destructive">

@@ -8,8 +8,11 @@ import {
   updateAdminTeacher,
   createAdminStudent,
   updateAdminStudent,
+  getAdminTeachers,
 } from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
+import LanguagesField from "./LanguagesField";
+import CourseSelector from "./CourseSelector";
 
 // Shared Add/Edit form for both Teachers and Students — the field shape
 // (name/email/phone) and validation flow are identical either way, differing
@@ -61,8 +64,16 @@ export default function UserFormModal({ mode, role, user, onClose, onSaved }) {
   // rather than silently defaulting to whichever option happens to be
   // first in the list.
   const [accountType, setAccountType] = useState(user?.accountType ?? "");
+  const [languages, setLanguages] = useState(user?.languages ?? []);
+  // Course rows are only ever shown for a brand-new student — editing an
+  // existing student's enrollments goes through ManageEnrollmentsModal
+  // instead (Part 4), so this never needs to be pre-filled from `user`.
+  const [courses, setCourses] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+
+  const showCourseSelector = role === "student" && mode === "create";
 
   useEffect(() => {
     function handleKeyDown(event) {
@@ -71,6 +82,14 @@ export default function UserFormModal({ mode, role, user, onClose, onSaved }) {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
+
+  useEffect(() => {
+    if (!showCourseSelector) return;
+    const token = getAdminToken();
+    getAdminTeachers(token)
+      .then((res) => setTeachers(res.teachers))
+      .catch(() => setTeachers([]));
+  }, [showCourseSelector]);
 
   const emailRequired = role === "student";
 
@@ -88,6 +107,10 @@ export default function UserFormModal({ mode, role, user, onClose, onSaved }) {
         phone: phone.trim(),
         email: email.trim() || (mode === "create" ? undefined : ""),
         ...(role === "student" ? { accountType: accountType || undefined } : {}),
+        ...(role === "teacher" ? { languages } : {}),
+        ...(showCourseSelector
+          ? { courses: courses.map((row) => ({ courseSlug: row.courseSlug, tutorId: row.tutorId })) }
+          : {}),
       };
 
       let res;
@@ -213,6 +236,12 @@ export default function UserFormModal({ mode, role, user, onClose, onSaved }) {
                 <option value="permanent">Permanent</option>
               </select>
             </Field>
+          ) : null}
+
+          {role === "teacher" ? <LanguagesField value={languages} onChange={setLanguages} error={errors.languages} /> : null}
+
+          {showCourseSelector ? (
+            <CourseSelector rows={courses} onChange={setCourses} teachers={teachers} errors={errors} />
           ) : null}
 
           {errors.form ? (

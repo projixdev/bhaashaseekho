@@ -1,37 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { IconX, IconCheck } from "@tabler/icons-react";
-import { AdminApiError, getAdminTeachers, createAdminEnrollment, reassignAdminEnrollmentTutor } from "@/lib/adminApi";
+import { IconX, IconCheck, IconTrash } from "@tabler/icons-react";
+import {
+  AdminApiError,
+  getAdminTeachers,
+  createAdminEnrollment,
+  reassignAdminEnrollmentTutor,
+  deleteAdminEnrollment,
+} from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
-
-// Loosely coupled to this fixed list on purpose, matching the backend
-// (adminController.createEnrollment doesn't validate against an enum
-// either) and scripts/createUser.js/assignTutor.js before it — course
-// content lives in the website repo's data/courses.js, not this database.
-const COURSES = [
-  { value: "kannada", label: "Kannada" },
-  { value: "hindi", label: "Hindi" },
-  { value: "telugu", label: "Telugu" },
-];
-
-function courseLabel(slug) {
-  return COURSES.find((c) => c.value === slug)?.label ?? slug;
-}
+import { getCourseLabel } from "@/data/enrollmentCourses";
+import CourseSelector, { newCourseRow } from "./CourseSelector";
 
 // The "founder teaches the first few classes, then hands off to a
 // permanent tutor" workflow (scripts/createUser.js --course/--tutor +
-// scripts/assignTutor.js), as dashboard actions instead of CLI-only.
+// scripts/assignTutor.js), as dashboard actions instead of CLI-only. Phase
+// 21 extended this with the same language/sub-course taxonomy and tutor
+// picker the Add Student form uses (CourseSelector), plus removing a course
+// entirely — the one piece that didn't already exist in any form.
 export default function ManageEnrollmentsModal({ student, onClose, onChanged }) {
   const [teachers, setTeachers] = useState([]);
   const [loadingTeachers, setLoadingTeachers] = useState(true);
   const [enrollments, setEnrollments] = useState(student.teachers ?? []);
   const [reassigning, setReassigning] = useState({});
   const [savingId, setSavingId] = useState(null);
+  const [confirmingRemoveId, setConfirmingRemoveId] = useState(null);
+  const [removingId, setRemovingId] = useState(null);
   const [error, setError] = useState(null);
 
-  const [newCourse, setNewCourse] = useState("");
-  const [newTutorId, setNewTutorId] = useState("");
+  const [newRows, setNewRows] = useState([newCourseRow()]);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollErrors, setEnrollErrors] = useState({});
 
@@ -77,34 +75,68 @@ export default function ManageEnrollmentsModal({ student, onClose, onChanged }) 
     }
   }
 
+  async function handleRemove(enrollmentId) {
+    setRemovingId(enrollmentId);
+    setError(null);
+    try {
+      const token = getAdminToken();
+      await deleteAdminEnrollment(token, enrollmentId);
+      setEnrollments((current) => current.filter((e) => e.enrollmentId !== enrollmentId));
+      setConfirmingRemoveId(null);
+      onChanged();
+    } catch (err) {
+      setError(err instanceof AdminApiError ? err.message : "Could not remove this course.");
+    } finally {
+      setRemovingId(null);
+    }
+  }
+
   async function handleEnroll(event) {
     event.preventDefault();
     setEnrollErrors({});
+
+    const activeRows = newRows.filter((row) => row.courseSlug);
+    if (activeRows.length === 0) return;
+
+    // createAdminEnrollment (below) is a single-course endpoint, unlike the
+    // Add Student form's bulk create — so the "every selected course needs
+    // a tutor" check that endpoint gets for free has to happen here instead,
+    // before any of the rows are submitted.
+    const rowErrors = {};
+    newRows.forEach((row, index) => {
+      if (row.courseSlug && !row.tutorId) rowErrors[`courses.${index}.tutorId`] = "A tutor is required for every selected course.";
+    });
+    if (Object.keys(rowErrors).length > 0) {
+      setEnrollErrors(rowErrors);
+      return;
+    }
+
     setEnrolling(true);
     try {
       const token = getAdminToken();
-      const res = await createAdminEnrollment(token, student._id, { courseSlug: newCourse, tutorId: newTutorId });
-      setEnrollments((current) => {
-        const withoutSameCourse = current.filter((e) => e.courseSlug !== res.enrollment.courseSlug);
-        return [
-          ...withoutSameCourse,
-          {
-            enrollmentId: res.enrollment._id,
-            courseSlug: res.enrollment.courseSlug,
-            tutorId: res.enrollment.tutorId,
-            name: res.enrollment.tutorName,
-          },
-        ];
-      });
-      setNewCourse("");
-      setNewTutorId("");
+      // Sequential, not Promise.all — same reasoning as
+      // adminController.createStudent's own loop server-side: each
+      // enrollment succeeding before the next request starts keeps error
+      // attribution simple (which row failed) at this scale.
+      for (const row of activeRows) {
+        const res = await createAdminEnrollment(token, student._id, { courseSlug: row.courseSlug, tutorId: row.tutorId });
+        setEnrollments((current) => {
+          const withoutSameCourse = current.filter((e) => e.courseSlug !== res.enrollment.courseSlug);
+          return [
+            ...withoutSameCourse,
+            {
+              enrollmentId: res.enrollment._id,
+              courseSlug: res.enrollment.courseSlug,
+              tutorId: res.enrollment.tutorId,
+              name: res.enrollment.tutorName,
+            },
+          ];
+        });
+      }
+      setNewRows([newCourseRow()]);
       onChanged();
     } catch (err) {
-      if (err instanceof AdminApiError && err.errors) {
-        setEnrollErrors(err.errors);
-      } else {
-        setError(err instanceof AdminApiError ? err.message : "Could not enroll student.");
-      }
+      setError(err instanceof AdminApiError ? err.message : "Could not enroll student.");
     } finally {
       setEnrolling(false);
     }
@@ -122,7 +154,7 @@ export default function ManageEnrollmentsModal({ student, onClose, onChanged }) 
         role="dialog"
         aria-modal="true"
         aria-labelledby="enrollments-title"
-        className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-xl"
+        className="w-full max-w-lg rounded-lg border border-border bg-card p-6 shadow-xl"
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 id="enrollments-title" className="text-lg font-semibold text-card-foreground">
@@ -150,7 +182,38 @@ export default function ManageEnrollmentsModal({ student, onClose, onChanged }) 
           ) : (
             enrollments.map((e) => (
               <div key={e.enrollmentId} className="rounded-md border border-border p-3">
-                <p className="mb-2 text-sm font-medium text-foreground">{courseLabel(e.courseSlug)}</p>
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <p className="text-sm font-medium text-foreground">{getCourseLabel(e.courseSlug)}</p>
+                  {confirmingRemoveId === e.enrollmentId ? (
+                    <div className="flex shrink-0 items-center gap-1.5">
+                      <span className="text-xs text-secondary">Remove?</span>
+                      <button
+                        type="button"
+                        disabled={removingId === e.enrollmentId}
+                        onClick={() => handleRemove(e.enrollmentId)}
+                        className="rounded-md border border-destructive bg-destructive-soft px-2 py-1 text-xs font-medium text-destructive transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {removingId === e.enrollmentId ? "Removing…" : "Confirm"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmingRemoveId(null)}
+                        className="rounded-md border border-border px-2 py-1 text-xs font-medium text-foreground transition-colors hover:bg-muted"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setConfirmingRemoveId(e.enrollmentId)}
+                      aria-label={`Remove ${getCourseLabel(e.courseSlug)}`}
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-secondary transition-colors hover:bg-destructive-soft hover:text-destructive focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+                    >
+                      <IconTrash size={16} stroke={1.75} aria-hidden="true" />
+                    </button>
+                  )}
+                </div>
                 <div className="flex items-center gap-2">
                   <select
                     value={reassigning[e.enrollmentId] ?? e.tutorId ?? ""}
@@ -168,7 +231,7 @@ export default function ManageEnrollmentsModal({ student, onClose, onChanged }) 
                     type="button"
                     disabled={savingId === e.enrollmentId || !reassigning[e.enrollmentId] || reassigning[e.enrollmentId] === e.tutorId}
                     onClick={() => handleReassign(e.enrollmentId)}
-                    aria-label={`Save new teacher for ${courseLabel(e.courseSlug)}`}
+                    aria-label={`Save new teacher for ${getCourseLabel(e.courseSlug)}`}
                     className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     <IconCheck size={18} stroke={2} />
@@ -180,58 +243,7 @@ export default function ManageEnrollmentsModal({ student, onClose, onChanged }) 
         </div>
 
         <form onSubmit={handleEnroll} className="flex flex-col gap-3 border-t border-border pt-5">
-          <h3 className="text-sm font-semibold text-foreground">Enroll in a course</h3>
-
-          <div className="flex flex-col gap-1">
-            <select
-              value={newCourse}
-              onChange={(event) => setNewCourse(event.target.value)}
-              required
-              className={`h-11 rounded-md border bg-background px-3.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring ${
-                enrollErrors.courseSlug ? "border-destructive" : "border-border"
-              }`}
-            >
-              <option value="" disabled>
-                Choose a course…
-              </option>
-              {COURSES.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-            </select>
-            {enrollErrors.courseSlug ? (
-              <p role="alert" className="text-xs text-destructive">
-                {enrollErrors.courseSlug}
-              </p>
-            ) : null}
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <select
-              value={newTutorId}
-              onChange={(event) => setNewTutorId(event.target.value)}
-              required
-              disabled={loadingTeachers}
-              className={`h-11 rounded-md border bg-background px-3.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring ${
-                enrollErrors.tutorId ? "border-destructive" : "border-border"
-              }`}
-            >
-              <option value="" disabled>
-                Choose a teacher…
-              </option>
-              {teachers.map((t) => (
-                <option key={t._id} value={t._id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
-            {enrollErrors.tutorId ? (
-              <p role="alert" className="text-xs text-destructive">
-                {enrollErrors.tutorId}
-              </p>
-            ) : null}
-          </div>
+          <CourseSelector rows={newRows} onChange={setNewRows} teachers={teachers} errors={enrollErrors} />
 
           <button
             type="submit"
