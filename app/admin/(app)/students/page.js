@@ -10,13 +10,14 @@ import {
   IconPlus,
   IconPencil,
   IconUserOff,
+  IconUserCheck,
   IconSchool,
 } from "@tabler/icons-react";
 import SortableTable from "@/components/admin/SortableTable";
 import UserFormModal from "@/components/admin/UserFormModal";
 import ConfirmDeactivateModal from "@/components/admin/ConfirmDeactivateModal";
 import ManageEnrollmentsModal from "@/components/admin/ManageEnrollmentsModal";
-import { getAdminStudents, deleteAdminStudent } from "@/lib/adminApi";
+import { AdminApiError, getAdminStudents, deleteAdminStudent, reactivateAdminStudent } from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
 
 // Every color pair here was checked with an actual contrast calculation
@@ -132,7 +133,9 @@ export default function StudentsPage() {
   const [editingStudent, setEditingStudent] = useState(null);
   const [deactivatingStudent, setDeactivatingStudent] = useState(null);
   const [managingEnrollmentsFor, setManagingEnrollmentsFor] = useState(null);
+  const [reactivatingId, setReactivatingId] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [actionError, setActionError] = useState(null);
 
   const load = useCallback(async () => {
     const token = getAdminToken();
@@ -174,6 +177,21 @@ export default function StudentsPage() {
     setDeactivatingStudent(null);
     flashSuccess(`${name} was deactivated.`);
     load();
+  }
+
+  async function handleReactivate(student) {
+    setReactivatingId(student._id);
+    setActionError(null);
+    try {
+      const token = getAdminToken();
+      await reactivateAdminStudent(token, student._id);
+      flashSuccess(`${student.name} was reactivated.`);
+      load();
+    } catch (err) {
+      setActionError(err instanceof AdminApiError ? err.message : "Could not reactivate this student.");
+    } finally {
+      setReactivatingId(null);
+    }
   }
 
   const columns = [
@@ -232,7 +250,17 @@ export default function StudentsPage() {
             >
               <IconUserOff size={16} stroke={1.75} aria-hidden="true" />
             </button>
-          ) : null}
+          ) : (
+            <button
+              type="button"
+              disabled={reactivatingId === row._id}
+              onClick={() => handleReactivate(row)}
+              aria-label={`Reactivate ${row.name}`}
+              className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-success-soft hover:text-success focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <IconUserCheck size={16} stroke={1.75} aria-hidden="true" />
+            </button>
+          )}
         </div>
       ),
     },
@@ -260,6 +288,13 @@ export default function StudentsPage() {
         <div role="status" className="mb-4 flex items-center gap-2 rounded-md bg-success-soft px-4 py-3 text-sm text-success">
           <IconCircleCheck size={18} stroke={2} aria-hidden="true" />
           {successMessage}
+        </div>
+      ) : null}
+
+      {actionError ? (
+        <div role="alert" className="mb-4 flex items-center gap-2 rounded-md bg-destructive-soft px-4 py-3 text-sm text-destructive">
+          <IconAlertCircle size={18} stroke={2} aria-hidden="true" />
+          {actionError}
         </div>
       ) : null}
 

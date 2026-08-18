@@ -1,12 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { IconPlus, IconAlertCircle, IconCircleCheck, IconPencil, IconUserOff } from "@tabler/icons-react";
+import { IconPlus, IconAlertCircle, IconCircleCheck, IconPencil, IconUserOff, IconUserCheck } from "@tabler/icons-react";
 import SortableTable from "@/components/admin/SortableTable";
 import AddTeacherModal from "@/components/admin/AddTeacherModal";
 import UserFormModal from "@/components/admin/UserFormModal";
 import ConfirmDeactivateModal from "@/components/admin/ConfirmDeactivateModal";
-import { getAdminTeachers, deleteAdminTeacher } from "@/lib/adminApi";
+import { AdminApiError, getAdminTeachers, deleteAdminTeacher, reactivateAdminTeacher } from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
 
 function StatusBadge({ isActive }) {
@@ -41,7 +41,9 @@ export default function TeachersPage() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState(null);
   const [deactivatingTeacher, setDeactivatingTeacher] = useState(null);
+  const [reactivatingId, setReactivatingId] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [actionError, setActionError] = useState(null);
 
   const load = useCallback(async () => {
     const token = getAdminToken();
@@ -85,6 +87,21 @@ export default function TeachersPage() {
     load();
   }
 
+  async function handleReactivate(teacher) {
+    setReactivatingId(teacher._id);
+    setActionError(null);
+    try {
+      const token = getAdminToken();
+      await reactivateAdminTeacher(token, teacher._id);
+      flashSuccess(`${teacher.name} was reactivated.`);
+      load();
+    } catch (err) {
+      setActionError(err instanceof AdminApiError ? err.message : "Could not reactivate this teacher.");
+    } finally {
+      setReactivatingId(null);
+    }
+  }
+
   const columns = [
     { key: "name", label: "Name" },
     { key: "email", label: "Email", render: (row) => row.email || "—" },
@@ -113,7 +130,17 @@ export default function TeachersPage() {
             >
               <IconUserOff size={16} stroke={1.75} aria-hidden="true" />
             </button>
-          ) : null}
+          ) : (
+            <button
+              type="button"
+              disabled={reactivatingId === row._id}
+              onClick={() => handleReactivate(row)}
+              aria-label={`Reactivate ${row.name}`}
+              className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-success-soft hover:text-success focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <IconUserCheck size={16} stroke={1.75} aria-hidden="true" />
+            </button>
+          )}
         </div>
       ),
     },
@@ -141,6 +168,13 @@ export default function TeachersPage() {
         <div role="status" className="mb-4 flex items-center gap-2 rounded-md bg-success-soft px-4 py-3 text-sm text-success">
           <IconCircleCheck size={18} stroke={2} aria-hidden="true" />
           {successMessage}
+        </div>
+      ) : null}
+
+      {actionError ? (
+        <div role="alert" className="mb-4 flex items-center gap-2 rounded-md bg-destructive-soft px-4 py-3 text-sm text-destructive">
+          <IconAlertCircle size={18} stroke={2} aria-hidden="true" />
+          {actionError}
         </div>
       ) : null}
 
