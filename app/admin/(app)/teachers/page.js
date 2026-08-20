@@ -1,13 +1,30 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { IconPlus, IconAlertCircle, IconCircleCheck, IconPencil, IconUserOff, IconUserCheck } from "@tabler/icons-react";
+import {
+  IconPlus,
+  IconAlertCircle,
+  IconCircleCheck,
+  IconPencil,
+  IconUserOff,
+  IconUserCheck,
+  IconCheck,
+  IconX,
+} from "@tabler/icons-react";
 import SortableTable from "@/components/admin/SortableTable";
 import AddTeacherModal from "@/components/admin/AddTeacherModal";
 import UserFormModal from "@/components/admin/UserFormModal";
 import ConfirmDeactivateModal from "@/components/admin/ConfirmDeactivateModal";
-import { AdminApiError, getAdminTeachers, deleteAdminTeacher, reactivateAdminTeacher } from "@/lib/adminApi";
+import {
+  AdminApiError,
+  getAdminTeachers,
+  deleteAdminTeacher,
+  reactivateAdminTeacher,
+  approveTeacherCourse,
+  rejectTeacherCourse,
+} from "@/lib/adminApi";
 import { getAdminToken } from "@/lib/adminAuth";
+import { getCourseLabel } from "@/data/enrollmentCourses";
 
 function StatusBadge({ isActive }) {
   if (isActive) return null;
@@ -44,6 +61,7 @@ export default function TeachersPage() {
   const [reactivatingId, setReactivatingId] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [actionError, setActionError] = useState(null);
+  const [pendingRequestKey, setPendingRequestKey] = useState(null);
 
   const load = useCallback(async () => {
     const token = getAdminToken();
@@ -99,6 +117,38 @@ export default function TeachersPage() {
       setActionError(err instanceof AdminApiError ? err.message : "Could not reactivate this teacher.");
     } finally {
       setReactivatingId(null);
+    }
+  }
+
+  // Flattened across every teacher's own teachableCourses list (already
+  // returned by GET /api/admin/teachers, same shape as the existing
+  // languages field) rather than a separate endpoint — this is founder-scale
+  // data, so deriving it client-side from what's already fetched avoids a
+  // second round trip for what's realistically a handful of rows.
+  const pendingRequests = teachers.flatMap((teacher) =>
+    (teacher.teachableCourses ?? [])
+      .filter((c) => c.status === "pending")
+      .map((c) => ({ teacherId: teacher._id, teacherName: teacher.name, courseSlug: c.courseSlug }))
+  );
+
+  async function handleCourseDecision(request, decision) {
+    const key = `${request.teacherId}:${request.courseSlug}`;
+    setPendingRequestKey(key);
+    setActionError(null);
+    try {
+      const token = getAdminToken();
+      if (decision === "approve") {
+        await approveTeacherCourse(token, request.teacherId, request.courseSlug);
+        flashSuccess(`${request.teacherName} can now teach ${getCourseLabel(request.courseSlug)}.`);
+      } else {
+        await rejectTeacherCourse(token, request.teacherId, request.courseSlug);
+        flashSuccess(`Request from ${request.teacherName} for ${getCourseLabel(request.courseSlug)} was rejected.`);
+      }
+      load();
+    } catch (err) {
+      setActionError(err instanceof AdminApiError ? err.message : "Could not update this request.");
+    } finally {
+      setPendingRequestKey(null);
     }
   }
 
@@ -175,6 +225,50 @@ export default function TeachersPage() {
         <div role="alert" className="mb-4 flex items-center gap-2 rounded-md bg-destructive-soft px-4 py-3 text-sm text-destructive">
           <IconAlertCircle size={18} stroke={2} aria-hidden="true" />
           {actionError}
+        </div>
+      ) : null}
+
+      {!loading && pendingRequests.length > 0 ? (
+        <div className="mb-6 rounded-md border border-border bg-card">
+          <div className="border-b border-border px-4 py-3">
+            <h2 className="text-sm font-semibold text-foreground">
+              Course requests <span className="text-secondary">({pendingRequests.length})</span>
+            </h2>
+          </div>
+          <ul className="divide-y divide-border">
+            {pendingRequests.map((req) => {
+              const key = `${req.teacherId}:${req.courseSlug}`;
+              const busy = pendingRequestKey === key;
+              return (
+                <li key={key} className="flex items-center justify-between gap-4 px-4 py-3">
+                  <p className="text-sm text-foreground">
+                    <span className="font-medium">{req.teacherName}</span>{" "}
+                    <span className="text-secondary">wants to teach</span> {getCourseLabel(req.courseSlug)}
+                  </p>
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => handleCourseDecision(req, "approve")}
+                      aria-label={`Approve ${req.teacherName} for ${getCourseLabel(req.courseSlug)}`}
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-success-soft hover:text-success focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <IconCheck size={16} stroke={2} aria-hidden="true" />
+                    </button>
+                    <button
+                      type="button"
+                      disabled={busy}
+                      onClick={() => handleCourseDecision(req, "reject")}
+                      aria-label={`Reject ${req.teacherName} for ${getCourseLabel(req.courseSlug)}`}
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-secondary transition-colors hover:bg-destructive-soft hover:text-destructive focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <IconX size={16} stroke={2} aria-hidden="true" />
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       ) : null}
 
